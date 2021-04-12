@@ -1,6 +1,7 @@
 package core
 
 import (
+	"io/ioutil"
 	"os"
 	"regexp"
 	"strconv"
@@ -133,7 +134,7 @@ func dispatcher(
 }
 
 func dispenseFileLineByLine(filename string, out chan string) {
-	data, _ := os.ReadFile(filename)
+	data, _ := ioutil.ReadFile(filename)
 	lines := strings.Split(string(data), "\n")
 	for _, line := range lines {
 		out <- line

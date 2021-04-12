@@ -1,6 +1,7 @@
 package core
 
 import (
+	"io/ioutil"
 	"os"
 	"testing"
 
@@ -89,7 +90,7 @@ func TestTsvPreprocessing(t *testing.T) {
 }
 
 func readOutputFile(t *testing.T, outputFile string) string {
-	bytes, err := os.ReadFile(outputFile)
+	bytes, err := ioutil.ReadFile(outputFile)
 	assert.NoError(t, err)
 	return string(bytes)
 }

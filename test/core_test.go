@@ -3,10 +3,12 @@ package core
 import (
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 
+	"github.com/obonobo/sql-prepro/core"
+
 	"github.com/stretchr/testify/assert"
-	"prepro.ca/core"
 )
 
 const (
@@ -96,6 +98,19 @@ func TestOutputFileNameConversion(t *testing.T) {
 	output := core.ConvertInputFileNameToOutputFileName(input)
 	expected := "INSERT_some_file.sql"
 	assert.Equal(t, expected, output)
+}
+
+func TestCSVPatternMatching(t *testing.T) {
+	csv := "./some/path/actors.csv"
+	tsv := "./some/path/actors.tsv"
+	sql := "./some/path/actors.sql"
+	cap := "./some/path/actors.CSV"
+	assert.True(t, core.FileIsCSV(csv))
+	assert.True(t, core.FileIsCSV(strings.TrimLeft(csv, "./")))
+	assert.True(t, core.FileIsCSV(cap))
+	assert.False(t, core.FileIsCSV(tsv))
+	assert.False(t, core.FileIsCSV(sql))
+	assert.False(t, core.FileIsCSV(strings.TrimLeft(tsv, "./")))
 }
 
 func readOutputFile(t *testing.T, outputFile string) string {

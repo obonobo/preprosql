@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"prepro.ca/core"
+	"github.com/obonobo/sql-prepro/core"
 )
 
 const tableNameFilePathSeparator = ":"
@@ -33,8 +33,6 @@ func parseArgs() map[string]interface{} {
 		flag.PrintDefaults()
 	}
 	outputDirectory := flag.String("out", "", "Output directory for processed files, use '--' to output to STDOUT")
-	csv := flag.Bool("csv", false, "Parse input as CSV instead of a TSV")
-	flag.Bool("tsv", true, "(default) Parse input as TSV")
 	flag.Parse()
 	rest := flag.Args()
 	if rest == nil {
@@ -42,14 +40,12 @@ func parseArgs() map[string]interface{} {
 	}
 	return map[string]interface{}{
 		"outputDirectory": *outputDirectory,
-		"csv":             *csv,
 		"rest":            rest,
 	}
 }
 
 // Parses commandline arguments and returns a function for you to execute
 func tellMeWhatToDoBasedOnArgs(args map[string]interface{}) (func() error, error) {
-	csv := args["csv"].(bool)
 	somethingWentWrong := errors.New("something went wrong while attempting to process commandline arguments")
 	do := func(doIt func(map[string]string)) error {
 		for _, arg := range args["rest"].([]string) {
@@ -64,10 +60,12 @@ func tellMeWhatToDoBasedOnArgs(args map[string]interface{}) (func() error, error
 
 	if args["outputDirectory"] == nil {
 		return nil, somethingWentWrong
+	} else if len(args["rest"].([]string)) == 0 {
+		return func() error { flag.Usage(); return nil }, nil
 	} else if args["outputDirectory"] == "" {
 		return func() error {
 			return do(func(m map[string]string) {
-				core.ReadTables(csv, m)
+				core.ReadTables(m)
 			})
 		}, nil
 	} else if len(args["rest"].([]string)) > 0 {
@@ -77,7 +75,7 @@ func tellMeWhatToDoBasedOnArgs(args map[string]interface{}) (func() error, error
 		}
 		return func() error {
 			return do(func(m map[string]string) {
-				core.ReadTablesOutputTo(outputDir, csv, m)
+				core.ReadTablesOutputTo(outputDir, m)
 			})
 		}, nil
 	} else {

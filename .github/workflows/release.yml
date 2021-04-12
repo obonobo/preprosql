@@ -1,0 +1,42 @@
+name: Publish a release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish-release:
+    name: Publish a release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: "^1.16.3"
+
+      - name: Package stuff
+        run: |
+          package_stuff() {
+            zip -r "${1}.zip" ${@:2} \
+              && tar -cvzf "${1}.tar.gz" ${@:2} \
+              && tar -cvJf "${1}.tar.xz" ${@:2} \
+              && tar -cvjf "${1}.tar.bz2" ${@:2}
+            return $?
+          }
+
+          go test -v ./test/... && go build prepro.go || exit 1
+          package_stuff prepro_amd64 prepro
+
+          cp prepro 363-scripts/
+          zip -r 363-scripts.zip 363-scripts/
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          automatic_release_tag: latest
+          files: |
+            LICENSE
+            prepro_*.*
+            363-scripts.*

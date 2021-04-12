@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -10,39 +11,43 @@ import (
 	"sync"
 )
 
-const (
-	indent string = "    "
-)
+const indent string = "    "
 
 var (
 	fileExtension = regexp.MustCompile(`\..*$`)
+	csv           = regexp.MustCompile(`.*\.[cC][sS][vV]$`)
+	emptyLine     = regexp.MustCompile(`    \(''\)$`)
 )
 
 // Reads multiple files and table names
-func ReadTables(csv bool, tables map[string]string) {
+func ReadTables(tables map[string]string) {
 	for tableName, inputFile := range tables {
 		outputFile := ConvertInputFileNameToOutputFileName(inputFile)
-		ReadTable(tableName, inputFile, outputFile, csv)
+		ReadTable(tableName, inputFile, outputFile, FileIsCSV(inputFile))
 	}
 }
 
-func ReadTablesOutputTo(directory string, csv bool, tables map[string]string) {
+func ReadTablesOutputTo(directory string, tables map[string]string) {
 	if _, err := os.Stat(directory); os.IsNotExist(err) && directory != "--" {
 		os.MkdirAll(directory, os.FileMode(0666))
 	}
 	for tableName, inputFile := range tables {
 		if directory == "--" {
-			ReadTable(tableName, inputFile, directory, csv)
+			ReadTable(tableName, inputFile, directory, FileIsCSV(inputFile))
 		} else {
 			outputFile := ConvertInputFileNameToOutputFileName(inputFile)
 			outputFile = filepath.Join(directory, filepath.Base(outputFile))
-			ReadTable(tableName, inputFile, outputFile, csv)
+			ReadTable(tableName, inputFile, outputFile, FileIsCSV(inputFile))
 		}
 	}
 }
 
 // Reads a '.dat' file to parse each line
 func ReadTable(tableName string, inputFile string, outputFile string, csv bool) error {
+	if _, err := os.Stat(inputFile); os.IsNotExist(err) {
+		fmt.Println("The file: '" + inputFile + "' does not exist. Skipping...")
+		return nil
+	}
 	out, err := getOutputFile(inputFile, outputFile)
 	if err != nil {
 		return err
@@ -52,6 +57,10 @@ func ReadTable(tableName string, inputFile string, outputFile string, csv bool) 
 		return indent + parseLine(s, csv)
 	})
 	return nil
+}
+
+func FileIsCSV(file string) bool {
+	return csv.Match([]byte(filepath.Base(file)))
 }
 
 func getOutputFile(inputFile string, outputFile string) (*os.File, error) {
@@ -96,12 +105,19 @@ func logLines(in chan string, file *os.File) {
 func writeAllLines(in chan string, file *os.File) string {
 	prev := ""
 	for l := range in {
+		if isEmptyLine(l) {
+			continue
+		}
 		if prev != "" {
 			file.WriteString(prev + ",\n")
 		}
 		prev = l
 	}
 	return prev
+}
+
+func isEmptyLine(line string) bool {
+	return emptyLine.Match([]byte(line))
 }
 
 func fileOrStdout(file *os.File) *os.File {

@@ -19,37 +19,37 @@ var (
 )
 
 // Reads multiple files and table names
-func ReadTables(tables map[string]string) {
+func ReadTables(csv bool, tables map[string]string) {
 	for tableName, inputFile := range tables {
 		outputFile := ConvertInputFileNameToOutputFileName(inputFile)
-		ReadTable(tableName, inputFile, outputFile)
+		ReadTable(tableName, inputFile, outputFile, csv)
 	}
 }
 
-func ReadTablesOutputTo(directory string, tables map[string]string) {
-	if _, err := os.Stat(directory); os.IsNotExist(err) {
+func ReadTablesOutputTo(directory string, csv bool, tables map[string]string) {
+	if _, err := os.Stat(directory); os.IsNotExist(err) && directory != "--" {
 		os.MkdirAll(directory, os.FileMode(0666))
 	}
 	for tableName, inputFile := range tables {
 		if directory == "--" {
-			ReadTable(tableName, inputFile, directory)
+			ReadTable(tableName, inputFile, directory, csv)
 		} else {
 			outputFile := ConvertInputFileNameToOutputFileName(inputFile)
 			outputFile = filepath.Join(directory, filepath.Base(outputFile))
-			ReadTable(tableName, inputFile, outputFile)
+			ReadTable(tableName, inputFile, outputFile, csv)
 		}
 	}
 }
 
 // Reads a '.dat' file to parse each line
-func ReadTable(tableName string, inputFile string, outputFile string) error {
+func ReadTable(tableName string, inputFile string, outputFile string, csv bool) error {
 	out, err := getOutputFile(inputFile, outputFile)
 	if err != nil {
 		return err
 	}
 	out.WriteString("INSERT INTO " + tableName + " VALUES\n")
 	printLineByLine(inputFile, out, func(s string) string {
-		return indent + parseLine(s)
+		return indent + parseLine(s, csv)
 	})
 	return nil
 }
@@ -160,12 +160,13 @@ func dispenseFileLineByLine(filename string, out chan string) {
 }
 
 // Parses a row in a '.dat' file
-func parseLine(line string) string {
-	var replace = strings.ReplaceAll(line, "\r", "")
-	replace = strings.ReplaceAll(replace, "\n", "")
-	replace = strings.ReplaceAll(replace, `\N`, "null")
-	replace = strings.ReplaceAll(replace, "'", "''")
-	split := strings.Split(replace, "\t")
+func parseLine(line string, csv bool) string {
+	splitChar := "\t"
+	if csv {
+		splitChar = ","
+	}
+	replaced := replaceSomeChars(line)
+	split := strings.Split(replaced, splitChar)
 	var ret strings.Builder
 	ret.WriteRune('(')
 	for _, v := range split[:len(split)-1] {
@@ -175,6 +176,14 @@ func parseLine(line string) string {
 	ret.WriteString(surroundWithQuotesIfString(split[len(split)-1]))
 	ret.WriteRune(')')
 	return ret.String()
+}
+
+func replaceSomeChars(line string) string {
+	replace := strings.ReplaceAll(line, "\r", "")
+	replace = strings.ReplaceAll(replace, "\n", "")
+	replace = strings.ReplaceAll(replace, `\N`, "null")
+	replace = strings.ReplaceAll(replace, "'", "''")
+	return replace
 }
 
 // Surrounds a string with single quotes

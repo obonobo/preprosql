@@ -10,7 +10,7 @@ import (
 )
 
 const tableNameFilePathSeparator = ":"
-const usageHeader = `sql-prepro: Convert TSV and CSV files to SQL insert statements
+const usageHeader = `sql-prepro: Convert TSV (default) and CSV files to SQL insert statements
 
 USAGE: prepro [OPTIONS] <table-name-1>:<file-1> <table-name-2>:<file-2> ...
 
@@ -33,6 +33,8 @@ func parseArgs() map[string]interface{} {
 		flag.PrintDefaults()
 	}
 	outputDirectory := flag.String("out", "", "Output directory for processed files, use '--' to output to STDOUT")
+	csv := flag.Bool("csv", false, "Parse input as CSV instead of a TSV")
+	flag.Bool("tsv", true, "(default) Parse input as TSV")
 	flag.Parse()
 	rest := flag.Args()
 	if rest == nil {
@@ -40,15 +42,15 @@ func parseArgs() map[string]interface{} {
 	}
 	return map[string]interface{}{
 		"outputDirectory": *outputDirectory,
+		"csv":             *csv,
 		"rest":            rest,
 	}
 }
 
 // Parses commandline arguments and returns a function for you to execute
 func tellMeWhatToDoBasedOnArgs(args map[string]interface{}) (func() error, error) {
-
+	csv := args["csv"].(bool)
 	somethingWentWrong := errors.New("something went wrong while attempting to process commandline arguments")
-
 	do := func(doIt func(map[string]string)) error {
 		for _, arg := range args["rest"].([]string) {
 			tableName, inputFile, err := parseArgument(arg)
@@ -63,7 +65,11 @@ func tellMeWhatToDoBasedOnArgs(args map[string]interface{}) (func() error, error
 	if args["outputDirectory"] == nil {
 		return nil, somethingWentWrong
 	} else if args["outputDirectory"] == "" {
-		return func() error { return do(core.ReadTables) }, nil
+		return func() error {
+			return do(func(m map[string]string) {
+				core.ReadTables(csv, m)
+			})
+		}, nil
 	} else if len(args["rest"].([]string)) > 0 {
 		outputDir, ok := args["outputDirectory"].(string)
 		if !ok {
@@ -71,7 +77,7 @@ func tellMeWhatToDoBasedOnArgs(args map[string]interface{}) (func() error, error
 		}
 		return func() error {
 			return do(func(m map[string]string) {
-				core.ReadTablesOutputTo(outputDir, m)
+				core.ReadTablesOutputTo(outputDir, csv, m)
 			})
 		}, nil
 	} else {

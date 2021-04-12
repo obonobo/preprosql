@@ -10,9 +10,11 @@ import (
 )
 
 const (
-	tableName         = "People"
-	tempInputFile     = "TMP_sql-prepro-testing-input-file.dat"
-	tabSeparatedInput = `1	Annie Potts	10
+	tableName     = "People"
+	tempInputFile = "TMP_sql-prepro-testing-input-file.dat"
+)
+
+const tabSeparatedInput = `1	Annie Potts	10
 2	Bill Farmer	20
 3	Don Rickles	3
 4	Erik von Detten	13
@@ -31,7 +33,7 @@ const (
 17	Philip Proctor	11
 18	R. Lee Ermey	14`
 
-	commaSeparatedInput = `1,Annie Potts,10
+const commaSeparatedInput = `1,Annie Potts,10
 2,Bill Farmer,20
 3,Don Rickles,3
 4,Erik von Detten,13
@@ -49,12 +51,9 @@ const (
 16,Penn Jillette,15
 17,Philip Proctor,11
 18,R. Lee Ermey,14`
-)
 
-var (
-	tempOutputFile = core.ConvertInputFileNameToOutputFileName(tempInputFile)
-	expectedOutput = "INSERT INTO " + tableName + " VALUES\n" +
-		`    (1, 'Annie Potts', 10),
+var tempOutputFile = core.ConvertInputFileNameToOutputFileName(tempInputFile)
+var expectedOutput = "INSERT INTO " + tableName + " VALUES\n" + `    (1, 'Annie Potts', 10),
     (2, 'Bill Farmer', 20),
     (3, 'Don Rickles', 3),
     (4, 'Erik von Detten', 13),
@@ -73,18 +72,21 @@ var (
     (17, 'Philip Proctor', 11),
     (18, 'R. Lee Ermey', 14);
 `
-)
 
 func TestCsvPreprocessing(t *testing.T) {
 	createTempInputFile(t, tempInputFile, commaSeparatedInput)
 	defer cleanupTempFile(t, tempInputFile)
+	defer cleanupTempFile(t, tempOutputFile)
+	core.ReadTable(tableName, tempInputFile, "", true)
+	actualOutput := readOutputFile(t, tempOutputFile)
+	assert.Equal(t, expectedOutput, actualOutput)
 }
 
 func TestTsvPreprocessing(t *testing.T) {
 	createTempInputFile(t, tempInputFile, tabSeparatedInput)
 	defer cleanupTempFile(t, tempInputFile)
 	defer cleanupTempFile(t, tempOutputFile)
-	core.ReadTable(tableName, tempInputFile, "")
+	core.ReadTable(tableName, tempInputFile, "", false)
 	actualOutput := readOutputFile(t, tempOutputFile)
 	assert.Equal(t, expectedOutput, actualOutput)
 }

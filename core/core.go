@@ -3,6 +3,7 @@ package core
 import (
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -22,6 +23,21 @@ func ReadTables(tables map[string]string) {
 	for tableName, inputFile := range tables {
 		outputFile := ConvertInputFileNameToOutputFileName(inputFile)
 		ReadTable(tableName, inputFile, outputFile)
+	}
+}
+
+func ReadTablesOutputTo(directory string, tables map[string]string) {
+	if _, err := os.Stat(directory); os.IsNotExist(err) {
+		os.MkdirAll(directory, os.FileMode(0666))
+	}
+	for tableName, inputFile := range tables {
+		if directory == "--" {
+			ReadTable(tableName, inputFile, directory)
+		} else {
+			outputFile := ConvertInputFileNameToOutputFileName(inputFile)
+			outputFile = filepath.Join(directory, filepath.Base(outputFile))
+			ReadTable(tableName, inputFile, outputFile)
+		}
 	}
 }
 
@@ -59,7 +75,8 @@ func getOutputFile(inputFile string, outputFile string) (*os.File, error) {
 }
 
 func ConvertInputFileNameToOutputFileName(inputFile string) string {
-	return "INSERT_" + fileExtension.ReplaceAllString(inputFile, ".sql")
+	file := filepath.Base(inputFile)
+	return "INSERT_" + fileExtension.ReplaceAllString(file, ".sql")
 }
 
 func printLineByLine(filename string, outputFile *os.File, transformLine func(string) string) {

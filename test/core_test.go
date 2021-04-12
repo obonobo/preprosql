@@ -89,6 +89,13 @@ func TestTsvPreprocessing(t *testing.T) {
 	assert.Equal(t, expectedOutput, actualOutput)
 }
 
+func TestOutputFileNameConversion(t *testing.T) {
+	input := "./some/dir/some_file.dat"
+	output := core.ConvertInputFileNameToOutputFileName(input)
+	expected := "INSERT_some_file.sql"
+	assert.Equal(t, expected, output)
+}
+
 func readOutputFile(t *testing.T, outputFile string) string {
 	bytes, err := ioutil.ReadFile(outputFile)
 	assert.NoError(t, err)

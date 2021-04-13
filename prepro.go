@@ -4,11 +4,13 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/obonobo/preprosql/core"
 )
 
+const version = "v1.0.1"
 const tableNameFilePathSeparator = ":"
 const usageHeader = `preprosql: Convert TSV (default) and CSV files to SQL insert statements
 
@@ -33,7 +35,12 @@ func parseArgs() map[string]interface{} {
 		flag.PrintDefaults()
 	}
 	outputDirectory := flag.String("out", "", "Output directory for processed files, use '--' to output to STDOUT")
+	v := flag.Bool("version", false, "Outputs the program version and then exits")
 	flag.Parse()
+	if *v {
+		fmt.Println("preprosql " + version)
+		os.Exit(0)
+	}
 	rest := flag.Args()
 	if rest == nil {
 		rest = []string{}

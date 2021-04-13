@@ -6,13 +6,13 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/obonobo/sql-prepro/core"
+	"github.com/obonobo/preprosql/core"
 )
 
 const tableNameFilePathSeparator = ":"
-const usageHeader = `sql-prepro: Convert TSV (default) and CSV files to SQL insert statements
+const usageHeader = `preprosql: Convert TSV (default) and CSV files to SQL insert statements
 
-USAGE: prepro [OPTIONS] <table-name-1>:<file-1> <table-name-2>:<file-2> ...
+USAGE: preprosql [OPTIONS] <table-name-1>:<file-1> <table-name-2>:<file-2> ...
 
 OPTIONS:
 `

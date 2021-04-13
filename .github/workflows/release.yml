@@ -24,19 +24,48 @@ jobs:
               && tar -cvjf "${1}.tar.bz2" ${@:2}
             return $?
           }
-
-          go test -v ./test/... && go build prepro.go || exit 1
-          package_stuff prepro_amd64 prepro
-
-          cp prepro 363-scripts/
+          binary_name=preprosql
+          go test -v ./test/... && go build -o "$binary_name" prepro.go || exit 1
+          package_stuff prepro_amd64 "$binary_name"
+          cp "$binary_name" 363-scripts/
           zip -r 363-scripts.zip 363-scripts/
 
-      - uses: marvinpinto/action-automatic-releases@latest
+      - name: Set RELEASE_VERSION
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
+
+      - name: Create release for ${{ env.RELEASE_VERSION }}
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          automatic_release_tag: ${{ env.RELEASE_VERSION }}
+          files: |
+            LICENSE
+            *prepro_*.*
+            363-scripts.*
+
+      - name: Set IS_LATEST
+        run: |
+          latest="$(git tag -l --sort=version:refname 'v*' | tail -n 1)"
+          echo $latest
+          if [[ ${{ env.RELEASE_VERSION}} == $latest ]]; then
+            echo "IS_LATEST=true" >> $GITHUB_ENV
+          else
+            echo "IS_LATEST=false" >> $GITHUB_ENV
+          fi
+          echo IS_LATEST=${{ env.IS_LATEST }}
+
+      - name: Release latest
+        if: ${{ env.IS_LATEST == 'true' }}
+        uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
           automatic_release_tag: latest
           files: |
             LICENSE
-            prepro_*.*
+            *prepro_*.*
             363-scripts.*

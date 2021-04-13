@@ -11,7 +11,7 @@ print_done() {
 
 # Convert all the .dat files in 'input' dir to .sql files in 'output' dir
 convert() (
-    [[ -f prepro ]] || return 1
+    [[ -f preprosql ]] || return 1
     prefix_dir=data
     ! [[ -d ${prefix_dir}/output ]] && mkdir ${prefix_dir}/output
     for file in ${prefix_dir}/input/*; do

@@ -1,4 +1,4 @@
-module github.com/obonobo/sql-prepro
+module github.com/obonobo/preprosql
 
 go 1.16
 

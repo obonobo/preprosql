@@ -6,14 +6,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/obonobo/sql-prepro/core"
+	"github.com/obonobo/preprosql/core"
 
 	"github.com/stretchr/testify/assert"
 )
 
 const (
 	tableName     = "People"
-	tempInputFile = "TMP_sql-prepro-testing-input-file.dat"
+	tempInputFile = "TMP_preprosql-testing-input-file.dat"
 )
 
 const tabSeparatedInput = `1	Annie Potts	10

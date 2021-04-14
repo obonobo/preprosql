@@ -1,4 +1,21 @@
-# preprosql [![Build](https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg)](https://github.com/obonobo/preprosql/actions/workflows/test.yml)
+<!-- Header and logo -->
+<p align="center">
+<a href="https://obonobo.github.io/preprosql/">
+    <img src="site/public/logo-2-transparent.png"
+         alt="Godzilla ERP"
+         height="150rem"
+         />
+        </a>
+</p>
+
+<!-- Docs -->
+
+<!-- CI/CD builds -->
+<p align="center">
+  <a href="https://github.com/obonobo/preprosql/actions/workflows/test.yml" target="_blank">
+    <img src="https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg" alt="Maven Build" height="30rem">
+  </a>
+</p>
 
 Commandline tool - give it your `.tsv` and `.csv` files and it spits out big fat
 `INSERT` SQL statements for convenient importing.

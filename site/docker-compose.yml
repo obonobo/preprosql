@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  nginx:
+    container_name: scratch
+    image: nginx
+    ports:
+      - 8080:80
+    networks:
+      - main
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - type: bind
+        source: ./out
+        target: /usr/share/nginx/html
+
+networks:
+  main:
+    name: scratch_network

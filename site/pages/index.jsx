@@ -17,7 +17,7 @@ const Spinner = () => (
 const Home = () => (
   <>
     <Head>
-      <title>Example App</title>
+      <title>PreProSQL</title>
       <link rel="icon" href="/favicon.ico" />
       <link rel="preconnect" href="https://fonts.gstatic.com" />
       <link
@@ -35,7 +35,7 @@ const Home = () => (
         <Content />
       </main>
     </div>
-    <footer>Example App</footer>
+    <footer style={{ display: "none" }}>PreProSQL</footer>
   </>
 );
 

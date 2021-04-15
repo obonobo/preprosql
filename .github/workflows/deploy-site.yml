@@ -1,0 +1,44 @@
+name: Deploy Site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Site to GitHub Pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "^15"
+
+      - name: Push to branch 'origin/site'
+        run: |
+          echo Deploying site to origin/site
+
+          git config --global user.email "github@actions.com"
+          git config --global user.name "GitHub Actions"
+          git checkout -b site
+          git reset --hard origin/main
+
+          cd site
+
+          node enable-gh-pages.js
+          yarn install
+          yarn deploy
+          touch ../docs/.nojekyll
+
+          cat next.config.js
+          git status
+          git add -A :/
+          git add next.config.js
+          git add ../docs/
+          git status
+          git commit -m 'GitHub Actions: deploying to origin/site'
+          git push --force --set-upstream origin site
+
+          echo Deployment complete

@@ -8,7 +8,7 @@
     "start": "next start -p $PORT",
     "test": "jest",
     "export": "next export",
-    "deploy": "yarn build && yarn export && rm -rf ../docs && cp -rf out ../docs && touch ../docs/.nojekyll"
+    "deploy": "yarn build && yarn export -o ../docs"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",

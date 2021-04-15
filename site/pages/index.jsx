@@ -1,11 +1,13 @@
 import Head from "next/head";
 import { FloatyTiltyHeaderCard } from "../src/components/FloatyTiltyHeaderCard";
+import Triangles from "../src/components/Triangles";
+import { assetPrefix } from "../src/utils";
 import styles from "./index.module.scss";
 
 const HeadWithFonts = () => (
   <Head>
     <title>PreProSQL</title>
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href={`${assetPrefix}/favicon.ico`} />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=B612:wght@700&display=swap"
@@ -23,10 +25,7 @@ const MyFooter = () => <footer style={{ display: "none" }}>PreProSQL</footer>;
 
 const Background = () => (
   <div className={styles.background}>
-    <div className={styles.triangles}>
-      <img alt="triangles" src="/triangles.png" />
-    </div>
-    asd
+    <Triangles button className={styles.triangles} />
   </div>
 );
 

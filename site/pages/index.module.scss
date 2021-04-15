@@ -23,13 +23,56 @@
 
 .triangles {
   height: 15.3em;
+  width: 100%;
 
-  img {
-    height: inherit;
-    width: 100%;
+  img,
+  svg {
     box-sizing: border-box;
     object-fit: cover;
     border-bottom: 0.5em solid rgba(128, 128, 128, 0.404);
+  }
+}
+
+.regenerate {
+  align-self: flex-end;
+  display: flex;
+  place-items: center;
+  place-content: center;
+  height: 2.5em;
+  width: 2.5em;
+  padding: 0.1em;
+  transition: all 0.1s;
+
+  :hover {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  :active {
+    transform: scale(1.1) rotate(-5deg);
+  }
+
+  * {
+    height: inherit;
+    width: inherit;
+    border: none;
+    object-fit: none;
+    box-sizing: unset;
+    transition: all 0.1s;
+  }
+}
+
+.trianglesOverlay {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  & > * {
+    margin: 2em;
   }
 }
 

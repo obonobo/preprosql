@@ -7,43 +7,41 @@
 }
 
 .root {
-  @extend %fullWidthCenter;
+  display: flex;
+  justify-items: center;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-}
-
-.loadingContainer {
-  @extend %fullWidthCenter;
-  svg {
-    transform: scale(2);
+  & > * {
+    margin-top: 7%;
   }
-}
-
-.floaterContainer {
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-  color: red;
 }
 
 .floater {
-  display: flex;
-  flex-direction: column;
-  place-items: center;
+  margin-top: 13%;
+  flex-grow: 0;
+}
 
-  background: linear-gradient(45deg, #0040ff, #00bfff);
-  border-radius: 1em;
-  box-shadow: 0px 11px 67px -4px rgba(0, 0, 0, 0.6);
+.triangles {
+  height: 15.3em;
 
-  h1 {
-    margin: 0px;
+  img {
+    height: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    object-fit: cover;
+    border-bottom: 0.5em solid rgba(128, 128, 128, 0.404);
   }
+}
 
-  a {
-    margin-bottom: 0.3em;
-  }
+.background {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  z-index: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .title {
@@ -55,6 +53,6 @@
 
   span {
     color: hsl(0, 100%, 30%);
-    font-family: 'IBM Plex Serif';
+    font-family: "IBM Plex Serif";
   }
 }

@@ -6,6 +6,10 @@ import Tiltable from "./Tiltable";
 
 const shakyDistance = 0.05;
 const useStyles = makeStyles(() => ({
+  root: {
+    zIndex: 10000,
+  },
+
   floaterContainer: {
     userSelect: "none",
     color: "red",
@@ -43,7 +47,7 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     placeItems: "center",
-    padding: '0.5em 1.5em',
+    padding: "0.5em 1.5em",
   },
 
   shaking: {
@@ -97,11 +101,10 @@ const Contents = ({ classes }) => {
   );
 };
 
-const FloatyTiltyHeaderCard = () => {
+const FloatyTiltyHeaderCard = (props) => {
   const classes = useStyles();
-
   return (
-    <a href="https://github.com/obonobo/preprosql">
+    <a href="https://github.com/obonobo/preprosql" {...props}>
       <Floatable className={classes.floaterContainer}>
         <Tiltable className={classes.floater} speed={500}>
           <Contents classes={classes} />

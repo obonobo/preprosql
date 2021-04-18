@@ -1,21 +1,23 @@
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
+import styled from "styled-components";
 
-const useStyles = makeStyles(() => ({
-  display: "flex",
-  height: "100vh",
-  width: "100vw",
-  placeItems: "center",
-  placeContent: "center",
-}));
+const Container = styled.div`
+  place-content: center;
+  place-items: center;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+`;
+
+const Progress = styled(CircularProgress)`
+  height: 5em;
+  width: 5em;
+`;
 
 export default function Spinner() {
-  const classes = useStyles();
   return (
-    <div className={classes.loadingContainer}>
-      <CircularProgress
-        color="secondary"
-        style={{ height: "5em", width: "5em" }}
-      />
-    </div>
+    <Container>
+      <Progress color="secondary" />
+    </Container>
   );
 }

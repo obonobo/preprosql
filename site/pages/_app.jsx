@@ -1,15 +1,39 @@
-/*******************************************************************************
- * TODO: REMOVE THIS HEADER
- *
- * This component is what Next.js uses to initialize each page, this let's us
- * add some global CSS and do some other cool things.
- *
- * For more information, check out:
- * https://nextjs.org/docs/advanced-features/custom-app
- ******************************************************************************/
+import Head from "next/head";
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import styled from "styled-components";
+import { assetPrefix } from "../src/utils";
+import "./app.global.css";
 
-import "./app.scss";
+const Footer = styled.footer`
+  display: none;
+`;
 
-export default function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />;
+export default function App({ Component, pageProps }) {
+  // Below is for MUI integration with Next.js SSR
+  useEffect(() => {
+    const jssStyles = document.querySelector("#jss-server-side");
+    if (jssStyles) jssStyles.parentElement.removeChild(jssStyles);
+  }, []);
+
+  return (
+    <>
+      {/* prettier-ignore */}
+      <Head>
+        <title>PreProSQL</title>
+        <link rel="icon"       href={`${assetPrefix}/favicon.ico`} />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=B612:wght@700&display=swap" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300&display=swap" />
+      </Head>
+      <Component {...pageProps} />
+      <Footer>PreProSQL</Footer>
+    </>
+  );
 }
+
+App.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired,
+};

@@ -1,44 +1,59 @@
-import Head from "next/head";
+import styled from "styled-components";
 import { FloatyTiltyHeaderCard } from "../src/components/FloatyTiltyHeaderCard";
 import Triangles from "../src/components/Triangles";
-import { assetPrefix } from "../src/utils";
-import styles from "./index.module.scss";
 
-const HeadWithFonts = () => (
-  <Head>
-    <title>PreProSQL</title>
-    <link rel="icon" href={`${assetPrefix}/favicon.ico`} />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=B612:wght@700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300&display=swap"
-      rel="stylesheet"
-    />
-  </Head>
-);
+const Root = styled.div`
+  justify-content: center;
+  flex-direction: column;
+  justify-items: center;
+  display: flex;
 
-const MyFooter = () => <footer style={{ display: "none" }}>PreProSQL</footer>;
+  & > * {
+    margin-top: 7%;
+  }
+`;
+
+const Header = styled(FloatyTiltyHeaderCard)`
+  margin-top: 13%;
+  flex-grow: 0;
+`;
+
+const BackgroundBase = styled.div`
+  position: absolute;
+  width: 100%;
+  padding: 0;
+  z-index: 0;
+  margin: 0;
+  left: 0;
+  top: 0;
+`;
+
+const CoolTriangles = styled(Triangles)`
+  height: 15.3em;
+  width: 100%;
+
+  img,
+  svg {
+    object-fit: cover;
+    box-sizing: border-box;
+    border-bottom: 0.5em solid rgba(128, 128, 128, 0.404);
+  }
+`;
 
 const Background = () => (
-  <div className={styles.background}>
-    <Triangles button className={styles.triangles} />
-  </div>
+  <BackgroundBase>
+    <CoolTriangles button />
+  </BackgroundBase>
 );
 
 const Home = () => (
   <>
-    <HeadWithFonts />
     <main>
-      <div className={styles.root}>
+      <Root>
         <Background />
-        <FloatyTiltyHeaderCard className={styles.floater} />
-        <p>asdasd</p>
-      </div>
-      <MyFooter />
+        <Header />
+        <p>asdasd </p>
+      </Root>
     </main>
   </>
 );

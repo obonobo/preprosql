@@ -2,7 +2,7 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import styled from "styled-components";
-import { assetPrefix } from "../src/utils";
+import { assetPrefix } from "../src/util/utils";
 import "./app.global.css";
 
 const Footer = styled.footer`

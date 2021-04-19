@@ -1,5 +1,7 @@
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
+import { useTopScrollTrigger } from "../util/hooks";
 import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
 
@@ -22,15 +24,17 @@ const BuildBadge = (props) => (
 const FloaterContainer = styled(Floatable)`
   user-select: none;
   color: red;
+  width: inherit;
 `;
 
 const Floater = styled(Tiltable)`
+  width: inherit;
   display: flex;
   flex-direction: column;
   place-items: center;
 
-  background: linear-gradient(45deg, #0040ff, #00bfff);
   border-radius: 1em;
+  background: linear-gradient(45deg, #0040ff, #00bfff);
   box-shadow: 0px 11px 67px -4px rgba(0, 0, 0, 0.6);
 
   & h1 {
@@ -59,10 +63,11 @@ const Title = styled(AppLogo)`
 `;
 
 const ContentsBase = styled.div`
+  width: inherit;
   display: flex;
   flex-direction: column;
   place-items: center;
-  padding: 0.5em 1.5em;
+  padding: 0.5em 0em;
 `;
 
 const shakyDistance = 0.05;
@@ -98,15 +103,40 @@ const Contents = () => {
   );
 };
 
-const GithubLink = ({ className, children, props }) => (
-  <a
-    className={className}
-    href="https://github.com/obonobo/preprosql"
-    {...props}
-  >
-    {children}
-  </a>
-);
+/* prettier-ignore */
+const LinkBase = styled.a`
+  transition: all 0.4s;
+  width: min(42em, 100vw);
+
+  position: fixed;
+  top: -2em;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2000;
+
+  /* Move the component to the topbar if you scroll too far */
+  ${({ $mini }) => $mini &&`
+    top: 1em;
+    left: 0%;
+    transform: translate(-30%, -80%) scale(0.3);
+  `}
+`;
+
+const GithubLink = ({ className, children, props }) => {
+  const trigger = useTopScrollTrigger();
+  const smallScreen = useMediaQuery('(max-width: 45em)');
+
+  return (
+    <LinkBase
+      $mini={trigger || smallScreen}
+      className={className}
+      href="https://github.com/obonobo/preprosql"
+      {...props}
+    >
+      {children}
+    </LinkBase>
+  );
+};
 
 const FloatyTiltyHeaderCard = ({ className, ...props }) => (
   <GithubLink className={className} {...props}>

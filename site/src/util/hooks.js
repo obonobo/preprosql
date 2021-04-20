@@ -22,10 +22,11 @@ const useTopScrollTrigger = ({ threshold = 100 } = {}) => {
  * Attach an event listener to the 'scroll' event. `ref` can be a React `useRef`
  * value.
  */
-const useScrollListener = ({ ref = window, action = () => {} } = {}) => {
+const useScrollListener = ({ ref, action = () => {} } = {}) => {
   useEffect(() => {
-    (ref.current || ref).addEventListener("scroll", action);
-    return () => (ref.current || ref).removeEventListener("scroll", action);
+    const node = (ref && ref.current) || window;
+    node.addEventListener("scroll", action);
+    return () => node.removeEventListener("scroll", action);
   }, []);
 };
 

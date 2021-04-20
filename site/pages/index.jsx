@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { FloatyTiltyHeaderCard } from "../src/components/FloatyTiltyHeaderCard";
+import { Navbar } from "../src/components/Navbar";
 import Triangles from "../src/components/Triangles";
 import DemoArticle from "../src/content/DemoArticle";
 
-const Root = styled.div`
+const Content = styled.div`
   justify-content: center;
   flex-direction: column;
   justify-items: center;
@@ -22,23 +23,36 @@ const Header = styled(FloatyTiltyHeaderCard)`
 const BackgroundBase = styled.div`
   position: absolute;
   width: 100%;
+  height: 15.8em;
   padding: 0;
   z-index: 0;
   margin: 0;
   left: 0;
   top: 0;
+
+  box-sizing: border-box;
+`;
+
+const spacer = `
+  height: 15.8em;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  border: none;
 `;
 
 const CoolTriangles = styled(Triangles)`
-  height: 15.3em;
-  width: 100%;
+  ${spacer}
 
   img,
   svg {
     object-fit: cover;
     box-sizing: border-box;
-    border-bottom: 0.5em solid rgba(128, 128, 128, 0.404);
   }
+`;
+
+const Spacer = styled.div`
+  ${spacer}
 `;
 
 const Background = () => (
@@ -50,11 +64,13 @@ const Background = () => (
 const Home = () => (
   <>
     <main>
-      <Root>
-        <Background />
-        <Header />
-        <DemoArticle style={{ marginTop: "20em" }} />
-      </Root>
+      <Background />
+      <Spacer />
+      <Header />
+      <Navbar />
+      <Content>
+        <DemoArticle />
+      </Content>
     </main>
   </>
 );

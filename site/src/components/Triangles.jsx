@@ -92,7 +92,7 @@ const Tri = ({ w, h, button, ...props }) => {
 
   const populateBackground = () => {
     if (triangles.current) {
-      const newTriangle = createTriangles(w || 1920, h || 253);
+      const newTriangle = createTriangles(w || 1920, h || 240);
       triangles.current.innerHTML = "";
       triangles.current.appendChild(newTriangle);
     }

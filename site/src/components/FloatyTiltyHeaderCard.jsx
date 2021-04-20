@@ -34,8 +34,22 @@ const Floater = styled(Tiltable)`
   place-items: center;
 
   border-radius: 1em;
-  background: linear-gradient(45deg, #0040ff, #00bfff);
   box-shadow: 0px 11px 67px -4px rgba(0, 0, 0, 0.6);
+
+  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    45deg,
+    rgba(0, 64, 255, 0.712),
+    rgba(0, 191, 255, 0.712)
+  );
+
+  @supports not (backdrop-filter: blur(10px)) {
+    background: linear-gradient(
+      45deg,
+      rgba(0, 64, 255, 1),
+      rgba(0, 191, 255, 1)
+    );
+  }
 
   & h1 {
     margin: 0px;
@@ -116,15 +130,15 @@ const LinkBase = styled.a`
 
   /* Move the component to the topbar if you scroll too far */
   ${({ $mini }) => $mini &&`
-    top: 1em;
+    top: 0.25em;
     left: 0%;
     transform: translate(-30%, -80%) scale(0.3);
   `}
 `;
 
 const GithubLink = ({ className, children, props }) => {
-  const trigger = useTopScrollTrigger();
-  const smallScreen = useMediaQuery('(max-width: 45em)');
+  const trigger = useTopScrollTrigger({ threshold: 40 });
+  const smallScreen = useMediaQuery("(max-width: 45em)");
 
   return (
     <LinkBase

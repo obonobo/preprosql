@@ -1,9 +1,11 @@
 import Head from "next/head";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { assetPrefix } from "../src/util/utils";
 import "./app.global.css";
+import theme from '../src/util/styles';
+
 
 const Footer = styled.footer`
   display: none;
@@ -27,7 +29,9 @@ export default function App({ Component, pageProps }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@300&display=swap" />
       </Head>
-      <Component {...pageProps} />
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
       <Footer>PreProSQL</Footer>
     </>
   );

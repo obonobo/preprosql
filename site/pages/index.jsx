@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { FloatyTiltyHeaderCard } from "../src/components/FloatyTiltyHeaderCard";
-import { Navbar } from "../src/components/Navbar";
+import { Navbar } from "../src/components/navbar/Navbar";
 import Triangles from "../src/components/Triangles";
 import DemoArticle from "../src/content/DemoArticle";
 

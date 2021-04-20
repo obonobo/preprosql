@@ -63,16 +63,15 @@ const Floater = styled(Tiltable)`
 `;
 
 const Title = styled(AppLogo)`
-  color: hsl(240, 100%, 20%);
+  color: ${({ theme }) => theme.colors.preProBlue};
   font-size: 8em;
   margin: 0;
   margin-bottom: 0.1em;
-  font-family: "B612", Menlo, Monaco, Lucida Console, Liberation Mono,
-    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-family: ${({ theme }) => theme.fonts.B612};
 
   & span {
-    color: hsl(0, 100%, 30%);
-    font-family: IBM Plex Serif;
+    color: ${({ theme }) => theme.colors.sqlRed};
+    font-family: ${({ theme }) => theme.fonts.IBMPlexSerif};
   }
 `;
 
@@ -123,7 +122,7 @@ const LinkBase = styled.a`
   width: min(42em, 100vw);
 
   position: fixed;
-  top: -2em;
+  top: -1em;
   left: 50%;
   transform: translate(-50%, 0);
   z-index: 2000;
@@ -154,7 +153,7 @@ const GithubLink = ({ className, children, props }) => {
 
 const FloatyTiltyHeaderCard = ({ className, ...props }) => (
   <GithubLink className={className} {...props}>
-    <FloaterContainer>
+    <FloaterContainer distance="0.6em">
       <Floater speed={500}>
         <Contents />
       </Floater>

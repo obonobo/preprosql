@@ -1,4 +1,4 @@
-import { useMediaQuery, useTheme } from "@material-ui/core";
+import { useMediaQuery } from "@material-ui/core";
 import { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useTopScrollTrigger } from "../util/hooks";

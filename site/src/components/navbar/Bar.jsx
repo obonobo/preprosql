@@ -8,7 +8,7 @@ const BarBase = styled.div`
 
   margin: 0px !important;
   margin-bottom: -4em !important;
-  padding: 0px;
+  padding: 0.2em;
   width: 100%;
   height: 5em;
   z-index: 1500;
@@ -24,12 +24,6 @@ const BarBase = styled.div`
     border-top: 0.5em ${theme.colors.seeThroughPurple};
     backdrop-filter: blur(5px);
   `}
-
-  * {
-    color: #faead3;
-    font-family: ${({ theme }) => theme.fonts.IBMPlexSerif};
-    font-weight: 800;
-  }
 
   & > div {
     display: none;

@@ -30,5 +30,22 @@ const useScrollListener = ({ ref, action = () => {} } = {}) => {
   }, []);
 };
 
+/**
+ * Tells you when your element has gotten "stuck" at the top of the screen.
+ * Useful for `position: sticky;` elements.
+ */
+const useStickiedTrigger = ({ ref, threshold = 20 } = {}) => {
+  const [triggered, setTriggered] = useState(false);
+
+  useScrollListener({
+    action: () => {
+      if (!ref || !ref.current) return;
+      setTriggered(ref.current.getBoundingClientRect().top <= threshold);
+    },
+  });
+
+  return triggered;
+};
+
 export default useTopScrollTrigger;
-export { useTopScrollTrigger, useScrollListener };
+export { useTopScrollTrigger, useScrollListener, useStickiedTrigger };

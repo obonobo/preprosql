@@ -1,28 +1,15 @@
-import { useRef, useState } from "react";
-import { useScrollListener } from "../../util/hooks";
+import { useContext, useRef } from "react";
+import { useStickiedTrigger } from "../../util/hooks";
+import LiftedContext from "../extras/LiftedContext";
 import BarBase from "./Bar";
-import ButtonGrid from "./ButtonGrid";
-import { DownloadNow, TryInBrowser } from "./Buttons";
 
 const Navbar = (props) => {
-  const [lifted, setLifted] = useState(false);
   const me = useRef(null);
+  const stickied = useStickiedTrigger({ ref: me, threshold: 20 });
+  const { lifted, setLifted } = useContext(LiftedContext);
+  setLifted(stickied);
 
-  useScrollListener({
-    action: () => {
-      if (!me.current) return;
-      setLifted(me.current.getBoundingClientRect().top <= 20);
-    },
-  });
-
-  return (
-    <BarBase ref={me} $lifted={lifted} {...props}>
-      <ButtonGrid>
-        <DownloadNow />
-        <TryInBrowser />
-      </ButtonGrid>
-    </BarBase>
-  );
+  return <BarBase ref={me} $lifted={lifted} {...props} />;
 };
 
 export default Navbar;

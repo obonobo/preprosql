@@ -35,7 +35,7 @@ const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
     transition: ${({ theme }) => theme.transitions.lifted};
     position: fixed;
     z-index: 5000;
-    height: 5em;
+    height: 0em;
     width: fit-content;
     margin: 0;
     grid-column-gap: 19em;
@@ -52,7 +52,7 @@ const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
 
     button {
       backdrop-filter: sepia(20%) brightness(200%) blur(2px);
-      background-color: ${({ theme }) => theme.colors.seeThroughPurple};
+      background-color: ${({ theme }) => theme.colors.createBlue({ opacity: 0.8 })};
       ${({ $lifted }) => $lifted && `
           background-color: rgba(255, 255, 255, 0.1);
           backdrop-filter: blur(5px);

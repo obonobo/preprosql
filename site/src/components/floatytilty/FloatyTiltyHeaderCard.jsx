@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import { LiftedContext } from "../../util/contexts";
 import defaultTheme from "../../util/styles";
@@ -6,21 +6,42 @@ import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
 
 const AppTitle = styled.h1.attrs({
-  children: [
-    <Fragment key="prepro">PrePro</Fragment>,
-    <span key="sql">SQL</span>,
-  ],
+  children: (
+    <>
+      PrePro
+      <span key="sql">SQL</span>
+    </>
+  ),
   theme: defaultTheme,
 })`
-  color: ${({ theme }) => theme.colors.preProBlue};
-  font-size: 8em;
   margin: 0;
+  font-size: 8em;
   margin-bottom: 0.1em;
-  font-family: ${({ theme }) => theme.fonts.B612};
 
-  & span {
-    color: ${({ theme }) => theme.colors.sqlRed};
-    font-family: ${({ theme }) => theme.fonts.IBMPlexSerif};
+  ${({ theme }) => `
+    color: ${theme.colors.preProBlue};
+    font-family: ${theme.fonts.B612};
+    & span {
+      color: ${theme.colors.sqlRed};
+      font-family: ${theme.fonts.IBMPlexSerif};
+    }
+  `}
+`;
+
+const LinkToBuilds = styled.a.attrs({
+  href: "https://github.com/obonobo/preprosql/actions/workflows/test.yml",
+})`
+  height: 2em;
+  :hover {
+    transform: scale(1.05) translateY(-5%);
+  }
+
+  &,
+  & > img {
+    transition: ${({ theme }) =>
+      theme && theme.transitions && theme.transitions.liftedFast};
+    margin: 0;
+    padding: 0;
   }
 `;
 
@@ -60,10 +81,8 @@ const Floaty = styled(Tiltable).attrs({ speed: 500, $lifted: false })`
   place-items: center;
   height: fit-content !important;
   width: unset !important;
-
   border-radius: 1em;
   box-shadow: 0px 11px 67px -4px rgba(0, 0, 0, 0.6);
-
   backdrop-filter: blur(10px);
   background: linear-gradient(
     45deg,
@@ -91,11 +110,41 @@ const Floaty = styled(Tiltable).attrs({ speed: 500, $lifted: false })`
 `;
 
 const ContentsBase = styled.div`
-  width: inherit;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0.5em 0em;
+
   display: flex;
   flex-direction: column;
   place-items: center;
-  padding: 0.5em 0em;
+`;
+
+/* prettier-ignore */
+const HomeLink = styled.div.attrs(({ onClick }) => ({
+  theme: defaultTheme,
+  onClick: (e) => {
+    if (onClick) onClick(e);
+    if (window && window.location) window.location.replace("/");
+  },
+}))`
+  transition: ${({ theme }) => theme.transitions.lifted};
+  width: min(42em, 100vw);
+  position: fixed;
+  top: -1em;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2000;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  ${({ $lifted }) => $lifted && `
+    top: 0.3em;
+    left: 0%;
+    transform: translate(-30%, -80%) scale(0.3);
+  `}
 `;
 
 const Contents = () => {
@@ -111,34 +160,12 @@ const Contents = () => {
       onBlur={handleLeave}
     >
       <AppTitle />
-      <ShakyBuildBadge $hovering={hovering} />
+      <LinkToBuilds>
+        <ShakyBuildBadge $hovering={hovering} />
+      </LinkToBuilds>
     </ContentsBase>
   );
 };
-
-/* prettier-ignore */
-const LinkBase = styled.a.attrs({ theme: defaultTheme })`
-  transition: ${({ theme }) => theme.transitions.lifted };
-  width: min(42em, 100vw);
-
-  position: fixed;
-  top: -1em;
-  left: 50%;
-  transform: translate(-50%, 0);
-  z-index: 2000;
-
-  ${({ $lifted }) => $lifted &&`
-    top: 0.5em;
-    left: 0%;
-    transform: translate(-30%, -80%) scale(0.3);
-  `}
-`;
-
-const HomeLink = ({ $lifted, className, children, props }) => (
-  <LinkBase $lifted={$lifted} className={className} href="/" {...props}>
-    {children}
-  </LinkBase>
-);
 
 const FloatyTiltyHeaderCard = ({ className, ...props }) => {
   const { lifted } = useContext(LiftedContext);

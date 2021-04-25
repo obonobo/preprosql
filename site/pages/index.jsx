@@ -38,7 +38,7 @@ const Home = () => {
         <DynamicButtons />
         <Navbar />
         <Content>
-          <DemoArticle style={{ marginTop: "6em" }} />
+          <DemoArticle loremIpsum times={50} style={{ marginTop: "6em" }} />
         </Content>
       </main>
     </LiftedContext.Provider>

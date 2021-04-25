@@ -2,11 +2,11 @@ import { useMediaQuery } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
 import { DynamicButtons } from "../src/components/ButtonGrid";
-import LiftedContext from "../src/components/extras/LiftedContext";
 import { FloatyTiltyHeaderCard } from "../src/components/FloatyTiltyHeaderCard";
 import { Navbar } from "../src/components/navbar/Navbar";
 import { TriangleTopbar } from "../src/components/TriangleTopbar";
 import DemoArticle from "../src/content/DemoArticle";
+import { LiftedContext } from "../src/util/contexts";
 
 const Content = styled.div`
   justify-content: center;

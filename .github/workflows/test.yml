@@ -1,4 +1,3 @@
-
 name: Build
 
 on:
@@ -9,16 +8,16 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: 'Log level'
+        description: "Log level"
         required: true
-        default: 'warning'
+        default: "warning"
       tags:
         required: false
-        description: 'Test scenario tags'
+        description: "Test scenario tags"
 
 jobs:
   test:
-    name: test
+    name: Go Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,10 +31,30 @@ jobs:
           go-version: ${{ matrix.go-version }}
       - run: go test -v ./test/...
 
+  test-yarn:
+    name: Yarn Test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version: ["^15"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: |
+          cd site
+          yarn install
+          yarn test
+          yarn build
+          yarn export && rm -rf out/
+
   build:
     name: build
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test, test-yarn]
 
     env:
       app-source-name: prepro.go

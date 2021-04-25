@@ -5,9 +5,8 @@ import TranslateDownOnClick from "../extras/TranslateDownOnClick";
 import Floatable from "../Floatable";
 import Tiltable from "../Tiltable";
 
-const Clickable = styled(TranslateDownOnClick).attrs({ distance: "-0.08em" })`
+const Clickable = styled(TranslateDownOnClick).attrs({ distance: "0em" })`
   height: 80%;
-  transition: all 0.01s;
   transform: translateY(-0.15em);
 
   * {

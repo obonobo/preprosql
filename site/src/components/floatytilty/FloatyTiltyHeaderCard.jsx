@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useContext, useState } from "react";
 import styled from "styled-components";
-import { LiftedContext } from "../util/contexts";
-import defaultTheme from "../util/styles";
+import { LiftedContext } from "../../util/contexts";
+import defaultTheme from "../../util/styles";
 import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
 

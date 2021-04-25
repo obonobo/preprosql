@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { LiftedContext } from "../util/contexts";
-import defaultTheme from "../util/styles";
-import { DownloadNow, TryInBrowser } from "./navbar/Buttons";
+import { LiftedContext } from "../../util/contexts";
+import defaultTheme from "../../util/styles";
+import { DownloadNow, TryInBrowser } from "../navbar/Buttons";
 
 const Grid = styled.div.attrs({ theme: defaultTheme })`
   display: grid;

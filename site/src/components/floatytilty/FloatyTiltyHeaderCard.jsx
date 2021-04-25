@@ -3,6 +3,7 @@ import { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import { LiftedContext } from "../../util/contexts";
 import defaultTheme from "../../util/styles";
+import { assetPrefix } from "../../util/utils";
 import TranslateDownOnClick from "../extras/TranslateDownOnClick";
 import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
@@ -74,7 +75,7 @@ const HomeLink = styled.div.attrs(({ onClick }) => ({
   theme: defaultTheme,
   onClick: (e) => {
     if (onClick) onClick(e);
-    if (window && window.location) window.location.replace("/");
+    if (window && window.location) window.location.replace(`${assetPrefix}/`);
   },
 }))`
   transition: ${({ theme }) => theme.transitions.lifted};

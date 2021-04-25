@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 /**
  * A hook that tells you when the user has scrolled away from the top of the
@@ -47,5 +47,24 @@ const useStickiedTrigger = ({ ref, threshold = 20 } = {}) => {
   return triggered;
 };
 
-export default useTopScrollTrigger;
-export { useTopScrollTrigger, useScrollListener, useStickiedTrigger };
+const useLiftReducer = () =>
+  useReducer(
+    (_, action) => {
+      switch (action.type) {
+        case "lift":
+          return { lifted: true };
+        case "unlift":
+          return { lifted: false };
+        default:
+          throw new Error(`Bad action '${action.type}' in Home reducer`);
+      }
+    },
+    { lifted: false }
+  );
+
+export {
+  useTopScrollTrigger,
+  useScrollListener,
+  useStickiedTrigger,
+  useLiftReducer,
+};

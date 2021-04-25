@@ -54,7 +54,7 @@ const Tilty = styled(Floatable).attrs({ distance: "0.6em" })`
   width: unset !important;
 `;
 
-const Floaty = styled(Tiltable).attrs({ speed: 500 })`
+const Floaty = styled(Tiltable).attrs({ speed: 500, $lifted: false })`
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -127,31 +127,31 @@ const LinkBase = styled.a.attrs({ theme: defaultTheme })`
   transform: translate(-50%, 0);
   z-index: 2000;
 
-  ${({ $mini }) => $mini &&`
+  ${({ $lifted }) => $lifted &&`
     top: 0.5em;
     left: 0%;
     transform: translate(-30%, -80%) scale(0.3);
   `}
 `;
 
-const HomeLink = ({ className, children, props }) => {
+const HomeLink = ({ $lifted, className, children, props }) => (
+  <LinkBase $lifted={$lifted} className={className} href="/" {...props}>
+    {children}
+  </LinkBase>
+);
+
+const FloatyTiltyHeaderCard = ({ className, ...props }) => {
   const { lifted } = useContext(LiftedContext);
   return (
-    <LinkBase $mini={lifted} className={className} href="/" {...props}>
-      {children}
-    </LinkBase>
+    <HomeLink $lifted={lifted} className={className} {...props}>
+      <Tilty>
+        <Floaty>
+          <Contents />
+        </Floaty>
+      </Tilty>
+    </HomeLink>
   );
 };
-
-const FloatyTiltyHeaderCard = ({ className, ...props }) => (
-  <HomeLink className={className} {...props}>
-    <Tilty>
-      <Floaty>
-        <Contents />
-      </Floaty>
-    </Tilty>
-  </HomeLink>
-);
 
 export default FloatyTiltyHeaderCard;
 export { FloatyTiltyHeaderCard };

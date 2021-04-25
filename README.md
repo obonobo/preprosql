@@ -13,7 +13,7 @@
 <!-- CI/CD builds -->
 <p align="center">
   <a href="https://github.com/obonobo/preprosql/actions/workflows/test.yml" target="_blank">
-    <img src="https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg" alt="Maven Build" height="30rem">
+    <img src="https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg" alt="Go/Yarn Build" height="30rem">
   </a>
 </p>
 

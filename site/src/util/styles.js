@@ -1,11 +1,13 @@
-const purple = ({ opacity }) => `rgba(39, 0, 84, ${opacity})`;
+const purple = ({ opacity = 1 } = {}) => `rgba(39, 0, 84, ${opacity})`;
+const blue = ({ opacity = 1 } = {}) => `hsla(240, 100%, 20%, ${opacity})`;
 
 const theme = {
   colors: {
     sqlRed: "hsl(0, 100%, 30%)",
-    preProBlue: "hsl(240, 100%, 20%)",
+    preProBlue: blue(),
     seeThroughPurple: purple({ opacity: 0.623 }),
     createPurple: purple,
+    createBlue: blue,
   },
   fonts: {
     B612: `
@@ -24,8 +26,6 @@ const theme = {
   transitions: {
     lifted: "all 1s cubic-bezier(0.075, 0.82, 0.165, 1)",
     liftedFast: "all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)",
-    // lifted: "all 0.6s cubic-bezier(0.455, 0.03, 0.515, 0.955)",
-    // lifted: "all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
   },
 };
 

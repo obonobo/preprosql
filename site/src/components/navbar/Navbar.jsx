@@ -40,7 +40,7 @@ const BarBase = styled.div`
 
 const Navbar = (props) => {
   const me = useRef(null);
-  const stickied = useStickiedTrigger({ ref: me, threshold: 50 });
+  const stickied = useStickiedTrigger({ ref: me, threshold: 100 });
   const { setLifted } = useContext(LiftedContext);
   useEffect(() => setLifted(stickied));
   return <BarBase ref={me} $lifted={stickied} {...props} />;

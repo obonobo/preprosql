@@ -1,6 +1,6 @@
 import { useContext, useRef } from "react";
+import { LiftedContext } from "../../util/contexts";
 import { useStickiedTrigger } from "../../util/hooks";
-import LiftedContext from "../extras/LiftedContext";
 import BarBase from "./Bar";
 
 const Navbar = (props) => {

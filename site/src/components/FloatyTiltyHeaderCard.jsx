@@ -1,9 +1,9 @@
 import { Fragment, useCallback, useContext, useState } from "react";
 import styled from "styled-components";
-import LiftedContext from "./extras/LiftedContext";
+import { LiftedContext } from "../util/contexts";
+import defaultTheme from "../util/styles";
 import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
-import defaultTheme from "../util/styles";
 
 const AppTitle = styled.h1.attrs({
   children: [

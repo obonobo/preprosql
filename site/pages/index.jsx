@@ -1,10 +1,10 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
-import { DynamicButtons } from "../src/components/ButtonGrid";
-import { FloatyTiltyHeaderCard } from "../src/components/FloatyTiltyHeaderCard";
+import { DynamicButtons } from "../src/components/floatytilty/ButtonGrid";
+import { FloatyTiltyHeaderCard } from "../src/components/floatytilty/FloatyTiltyHeaderCard";
 import { Navbar } from "../src/components/navbar/Navbar";
-import { TriangleTopbar } from "../src/components/TriangleTopbar";
+import { TriangleTopbar } from "../src/components/triangles/TriangleTopbar";
 import DemoArticle from "../src/content/DemoArticle";
 import { LiftedContext } from "../src/util/contexts";
 

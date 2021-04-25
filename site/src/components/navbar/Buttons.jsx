@@ -2,8 +2,8 @@ import { Button } from "@material-ui/core";
 import styled from "styled-components";
 import defaultTheme from "../../util/styles";
 import TranslateDownOnClick from "../extras/TranslateDownOnClick";
-import Floatable from "../Floatable";
-import Tiltable from "../Tiltable";
+import Floatable from "../floatytilty/Floatable";
+import Tiltable from "../floatytilty/Tiltable";
 
 const Clickable = styled(TranslateDownOnClick).attrs({ distance: "0em" })`
   height: 80%;

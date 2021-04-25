@@ -2,7 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Triangulr from "triangulr";
-import { assetPrefix } from "../util/utils";
+import { assetPrefix } from "../../util/utils";
 
 const Root = styled.div`
   position: relative;

@@ -18,7 +18,7 @@ on:
 
 jobs:
   test:
-    name: test
+    name: Go Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -31,6 +31,23 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - run: go test -v ./test/...
+
+  test-yarn:
+    name: Yarn Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["15.x"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: cd site
+      - run: yarn install
+      - run: yarn test
+      - run: yarn build
+      - run: yarn export && rm -rf out/
 
   build:
     name: build

@@ -1,9 +1,10 @@
 import { useContext } from "react";
 import styled from "styled-components";
+import defaultTheme from "../util/styles";
 import LiftedContext from "./extras/LiftedContext";
 import { DownloadNow, TryInBrowser } from "./navbar/Buttons";
 
-const Grid = styled.div`
+const Grid = styled.div.attrs({ theme: defaultTheme })`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
@@ -28,7 +29,7 @@ const ButtonGrid = ({ ...props }) => (
 );
 
 // prettier-ignore
-const Buttons = styled(ButtonGrid)`
+const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
   &&& {
     transform: translate(50%, 0);
     transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);

@@ -1,10 +1,17 @@
-import { useCallback, useContext, useState } from "react";
+import { Fragment, useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import LiftedContext from "./extras/LiftedContext";
 import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
+import defaultTheme from "../util/styles";
 
-const AppTitle = styled.h1.attrs({ children: ["PrePro", <span>SQL</span>] })`
+const AppTitle = styled.h1.attrs({
+  children: [
+    <Fragment key="prepro">PrePro</Fragment>,
+    <span key="sql">SQL</span>,
+  ],
+  theme: defaultTheme,
+})`
   color: ${({ theme }) => theme.colors.preProBlue};
   font-size: 8em;
   margin: 0;

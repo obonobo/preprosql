@@ -51,7 +51,7 @@ const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
     `}
 
     &&&& button {
-      backdrop-filter: sepia(20%) brightness(200%) blur(5px);
+      backdrop-filter: sepia(20%) brightness(200%) blur(2px);
       background-color: ${({ theme }) => theme.colors.seeThroughPurple};
       ${({ $lifted }) => $lifted && `
           background-color: rgba(255, 255, 255, 0.1);

@@ -18,8 +18,10 @@ const BarBase = styled.div`
 
   top: 0;
   position: sticky;
-  transition: all 0.4s linear;
   border-top: 0.5em solid rgba(131, 131, 131, 0.575);
+  transition: ${({ theme }) => theme
+    && theme.transitions
+    && theme.transitions.lifted};
 
   ${({ $lifted, theme }) => $lifted && `
     box-shadow: 0px 8px 12px -6px rgba(71, 71, 71, 0.788);

@@ -1,5 +1,7 @@
 import { Button } from "@material-ui/core";
+import { useContext } from "react";
 import styled from "styled-components";
+import { LiftedContext } from "../../util/contexts";
 import defaultTheme from "../../util/styles";
 import TranslateDownOnClick from "../extras/TranslateDownOnClick";
 import Floatable from "../floatytilty/Floatable";
@@ -36,15 +38,18 @@ const CoolButton = styled(Button).attrs({
   }
 `;
 
-const FloatyTiltyButton = (props) => (
-  <Clickable>
-    <Floatable distance="0.2em">
-      <Tiltable speed={500}>
-        <CoolButton {...props} />
-      </Tiltable>
-    </Floatable>
-  </Clickable>
-);
+const FloatyTiltyButton = (props) => {
+  const { lifted } = useContext(LiftedContext);
+  return (
+    <Clickable>
+      <Floatable distance={lifted ? "0.2em" : "0.5em"}>
+        <Tiltable speed={500}>
+          <CoolButton {...props} />
+        </Tiltable>
+      </Floatable>
+    </Clickable>
+  );
+};
 
 const DownloadNow = (props) => (
   <FloatyTiltyButton {...props}>Download Now!</FloatyTiltyButton>

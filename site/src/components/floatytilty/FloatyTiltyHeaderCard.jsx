@@ -1,7 +1,9 @@
+import { ButtonBase, makeStyles } from "@material-ui/core";
 import { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import { LiftedContext } from "../../util/contexts";
 import defaultTheme from "../../util/styles";
+import TranslateDownOnClick from "../extras/TranslateDownOnClick";
 import Floatable from "./Floatable";
 import Tiltable from "./Tiltable";
 
@@ -49,8 +51,7 @@ const LinkToBuilds = styled.a.attrs({
 const ShakyBuildBadge = styled.img.attrs({
   $shakyDistance: 0.05,
   alt: "Build Badge",
-  src:
-    "https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg",
+  src: "https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg",
 })`
   height: 2em;
 
@@ -68,14 +69,41 @@ const ShakyBuildBadge = styled.img.attrs({
   }
 `;
 
-const Tilty = styled(Floatable).attrs({ distance: "0.6em" })`
+/* prettier-ignore */
+const HomeLink = styled.div.attrs(({ onClick }) => ({
+  theme: defaultTheme,
+  onClick: (e) => {
+    if (onClick) onClick(e);
+    if (window && window.location) window.location.replace("/");
+  },
+}))`
+  transition: ${({ theme }) => theme.transitions.lifted};
+  width: min(42em, 100vw);
+  position: fixed;
+  top: -1em;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2000;
+
+  :hover {
+    cursor: pointer;
+  }
+
+  ${({ $lifted }) => $lifted && `
+    top: 0.4em;
+    left: 0%;
+    transform: translate(-30%, -80%) scale(0.3);
+  `}
+`;
+
+const Floaty = styled(Floatable).attrs({ distance: "0.6em" })`
   user-select: none;
   color: red;
   height: fit-content !important;
   width: unset !important;
 `;
 
-const Floaty = styled(Tiltable).attrs({ speed: 500, $lifted: false })`
+const Tilty = styled(Tiltable).attrs({ speed: 500, $lifted: false })`
   display: flex;
   flex-direction: column;
   place-items: center;
@@ -109,42 +137,20 @@ const Floaty = styled(Tiltable).attrs({ speed: 500, $lifted: false })`
   }
 `;
 
-const ContentsBase = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: 0px;
-  padding: 0.5em 0em;
+const ContentsBase = styled(ButtonBase)`
+  &&& {
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    color: white;
+    font-size: 1rem;
+    padding: 0.5em 0em;
+    border-radius: inherit;
 
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-`;
-
-/* prettier-ignore */
-const HomeLink = styled.div.attrs(({ onClick }) => ({
-  theme: defaultTheme,
-  onClick: (e) => {
-    if (onClick) onClick(e);
-    if (window && window.location) window.location.replace("/");
-  },
-}))`
-  transition: ${({ theme }) => theme.transitions.lifted};
-  width: min(42em, 100vw);
-  position: fixed;
-  top: -1em;
-  left: 50%;
-  transform: translate(-50%, 0);
-  z-index: 2000;
-
-  :hover {
-    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
   }
-
-  ${({ $lifted }) => $lifted && `
-    top: 0.3em;
-    left: 0%;
-    transform: translate(-30%, -80%) scale(0.3);
-  `}
 `;
 
 const Contents = () => {
@@ -152,8 +158,10 @@ const Contents = () => {
   const handleEnter = useCallback(() => setHovering(true), []);
   const handleLeave = useCallback(() => setHovering(false), []);
 
+  const classes = makeStyles({ root: { height: "16em" } })();
   return (
     <ContentsBase
+      classes={classes}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       onFocus={handleEnter}
@@ -171,11 +179,13 @@ const FloatyTiltyHeaderCard = ({ className, ...props }) => {
   const { lifted } = useContext(LiftedContext);
   return (
     <HomeLink $lifted={lifted} className={className} {...props}>
-      <Tilty>
+      <TranslateDownOnClick distance="0.6em">
         <Floaty>
-          <Contents />
+          <Tilty>
+            <Contents />
+          </Tilty>
         </Floaty>
-      </Tilty>
+      </TranslateDownOnClick>
     </HomeLink>
   );
 };

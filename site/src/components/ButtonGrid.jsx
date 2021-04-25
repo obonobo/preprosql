@@ -32,7 +32,7 @@ const ButtonGrid = ({ ...props }) => (
 const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
   &&& {
     transform: translate(50%, 0);
-    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: ${({ theme }) => theme.transitions.lifted};
     position: fixed;
     z-index: 5000;
     height: 5em;

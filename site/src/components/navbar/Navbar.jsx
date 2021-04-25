@@ -5,11 +5,11 @@ import BarBase from "./Bar";
 
 const Navbar = (props) => {
   const me = useRef(null);
-  const stickied = useStickiedTrigger({ ref: me, threshold: 20 });
-  const { lifted, setLifted } = useContext(LiftedContext);
+  const stickied = useStickiedTrigger({ ref: me, threshold: 100 });
+  const { setLifted } = useContext(LiftedContext);
   setLifted(stickied);
 
-  return <BarBase ref={me} $lifted={lifted} {...props} />;
+  return <BarBase ref={me} $lifted={stickied} {...props} />;
 };
 
 export default Navbar;

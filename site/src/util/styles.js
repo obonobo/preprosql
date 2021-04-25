@@ -24,7 +24,7 @@ const theme = {
     sparse: "0px 11px 67px -4px rgba(0, 0, 0, 0.6)",
   },
   transitions: {
-    lifted: "all 1s cubic-bezier(0.075, 0.82, 0.165, 1)",
+    lifted: "all 700ms cubic-bezier(0.75, 0, 0.25, 1)",
     liftedFast: "all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)",
   },
 };

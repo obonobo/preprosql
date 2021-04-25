@@ -1,4 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const clicky = ({ distance = "0.05em" } = {}) => css`
+  :active {
+    transform: translateY(${distance});
+  }
+`;
 
 // prettier-ignore
 const TranslateDownOnClick = styled.div`
@@ -7,9 +13,7 @@ const TranslateDownOnClick = styled.div`
     && theme.transitions.liftedFast
     || "all 0.2s cubic-bezier(0.075, 0.82, 0.165, 1)"};
 
-  :active {
-    transform: translateY(${({ distance }) => distance || "0.05em"});
-  }
+  ${({ distance }) => clicky({ distance })}
 `;
 
 export default TranslateDownOnClick;

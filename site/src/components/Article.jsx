@@ -5,6 +5,7 @@ const ArticleBase = styled.p`
   min-width: 20em;
   margin-left: 2em;
   margin-right: 2em;
+  margin-top: 2em;
 `;
 
 export default function Article({ children, ...props }) {

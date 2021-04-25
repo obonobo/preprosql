@@ -117,8 +117,8 @@ const Contents = () => {
 };
 
 /* prettier-ignore */
-const LinkBase = styled.a`
-  transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+const LinkBase = styled.a.attrs({ theme: defaultTheme })`
+  transition: ${({ theme }) => theme.transitions.lifted };
   width: min(42em, 100vw);
 
   position: fixed;

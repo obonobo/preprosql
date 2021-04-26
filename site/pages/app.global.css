@@ -45,6 +45,18 @@ a {
   text-decoration: none;
 }
 
+p > a {
+  display: inline-block;
+  line-height: 0%;
+  color: hsl(0, 100%, 30%);
+  font-weight: bold;
+  padding-top: auto;
+  transition: all 2s cubic-bezier(0.075, 0.82, 0.165, 1);
+  text-decoration-line: underline;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: 0.2em;
+}
+
 h1,
 h2,
 h3,
@@ -63,8 +75,12 @@ h9 {
 }
 
 code {
-  background: #fafafa;
-  border-radius: 5px;
+  background: hsla(0, 0%, 0%, 0) !important;
+}
+
+code,
+pre > div {
+  border-radius: 0.4em;
   padding: 0.75rem;
   font-size: 1.1rem;
   font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,

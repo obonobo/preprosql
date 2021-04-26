@@ -1,12 +1,13 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
+import Wiki from "../src/components/article/articles/Wiki";
 import { DynamicButtons } from "../src/components/floatytilty/ButtonGrid";
 import { FloatyTiltyHeaderCard } from "../src/components/floatytilty/FloatyTiltyHeaderCard";
 import { Navbar } from "../src/components/navbar/Navbar";
 import { TriangleTopbar } from "../src/components/triangles/TriangleTopbar";
-import DemoArticle from "../src/content/DemoArticle";
 import { LiftedContext } from "../src/util/contexts";
+import { style as $ } from "../src/util/utils";
 
 const Content = styled.div`
   justify-content: center;
@@ -15,7 +16,7 @@ const Content = styled.div`
   display: flex;
 
   & > * {
-    margin-top: 7%;
+    margin-top: 7rem;
   }
 `;
 
@@ -38,7 +39,8 @@ const Home = () => {
         <DynamicButtons />
         <Navbar />
         <Content>
-          <DemoArticle loremIpsum times={50} style={{ marginTop: "6em" }} />
+          {/* <DemoArticle loremIpsum times={50} style={{ marginTop: "6em" }} /> */}
+          <Wiki style={$`width: 100vw;`} />
         </Content>
       </main>
     </LiftedContext.Provider>

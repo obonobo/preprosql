@@ -46,7 +46,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: |
           cd site
-          yarn install
+          yarn install --dev
           yarn test
           yarn build
           yarn export && rm -rf out/

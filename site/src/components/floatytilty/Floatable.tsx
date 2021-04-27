@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import clsx from "clsx";
+import { ComponentPropsWithoutRef } from "react";
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!! Commenting out this because of the below issue:
@@ -17,7 +18,13 @@ import clsx from "clsx";
 
 // !!! Below is an equivalent useStyles alternative
 
-const useStyles = ({ distance, animation, speed }) =>
+type AnimationSpec = {
+  distance?: string;
+  animation?: string;
+  speed?: number;
+};
+
+const useStyles = ({ distance, animation, speed }: AnimationSpec) =>
   makeStyles({
     root: {
       animation:
@@ -30,7 +37,10 @@ const useStyles = ({ distance, animation, speed }) =>
     },
   })();
 
-const Root = ({ className, ...props }) => (
+const Root = ({
+  className,
+  ...props
+}: AnimationSpec & ComponentPropsWithoutRef<"div">) => (
   <div className={clsx(className, useStyles(props).root)} {...props} />
 );
 
@@ -43,7 +53,7 @@ export default function Floatable({
   children,
   speed,
   ...props
-}) {
+}: AnimationSpec & ComponentPropsWithoutRef<"div">) {
   return (
     <Root
       className={className}

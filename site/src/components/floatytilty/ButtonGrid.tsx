@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { ComponentPropsWithoutRef, useContext } from "react";
 import styled from "styled-components";
 import { LiftedContext } from "../../util/contexts";
-import defaultTheme from "../../util/styles";
+import $ from "../../util/styles";
 import { DownloadNow, TryInBrowser } from "../navbar/Buttons";
 
-const Grid = styled.div.attrs({ theme: defaultTheme })`
+const Grid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
@@ -16,7 +16,7 @@ const Grid = styled.div.attrs({ theme: defaultTheme })`
 
   * {
     color: #faead3;
-    font-family: ${({ theme }) => theme.fonts.IBMPlexSerif};
+    font-family: ${$.fonts.IBMPlexSerif};
     font-weight: 800;
   }
 `;
@@ -29,10 +29,10 @@ const ButtonGrid = ({ ...props }) => (
 );
 
 // prettier-ignore
-const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
+const Buttons = styled(ButtonGrid)<{ $lifted: boolean }>`
   &&& {
     transform: translate(50%, 0);
-    transition: ${({ theme }) => theme.transitions.lifted};
+    transition: ${$.transitions.lifted};
     position: fixed;
     z-index: 5000;
     height: 0em;
@@ -51,9 +51,9 @@ const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
     `}
 
     button {
-      transition: ${({ theme }) => theme.transitions.lifted};
+      transition: ${$.transitions.lifted};
       backdrop-filter: sepia(20%) brightness(200%) blur(2px);
-      background-color: ${({ theme }) => theme.colors.createBlue({ opacity: 0.8 })};
+      background-color: ${($.colors.createBlue as ((a: any) => string))({ opacity: 0.8 })};
       ${({ $lifted }) => $lifted && `
           background-color: rgba(255, 255, 255, 0.1);
           backdrop-filter: blur(5px);
@@ -62,7 +62,7 @@ const Buttons = styled(ButtonGrid).attrs({ theme: defaultTheme })`
   }
 `;
 
-const DynamicButtons = (props) => {
+const DynamicButtons = (props: ComponentPropsWithoutRef<"div">) => {
   const { lifted } = useContext(LiftedContext);
   return <Buttons $lifted={lifted} {...props} />;
 };

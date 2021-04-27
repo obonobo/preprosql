@@ -1,6 +1,7 @@
 import { useMediaQuery } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
+import DemoArticle from "../src/components/article/articles/DemoArticle";
 import Wiki from "../src/components/article/articles/Wiki";
 import { DynamicButtons } from "../src/components/floatytilty/ButtonGrid";
 import { FloatyTiltyHeaderCard } from "../src/components/floatytilty/FloatyTiltyHeaderCard";
@@ -39,7 +40,7 @@ const Home = () => {
         <DynamicButtons />
         <Navbar />
         <Content>
-          {/* <DemoArticle loremIpsum times={50} style={{ marginTop: "6em" }} /> */}
+          <DemoArticle loremIpsum times={50} style={{ marginTop: "6em" }} />
           <Wiki style={$`width: 100vw;`} />
         </Content>
       </main>

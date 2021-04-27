@@ -1,11 +1,23 @@
 /* eslint-disable no-nested-ternary */
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { ReactMarkdownOptions } from "react-markdown";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 // import { duotoneDark as theme } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { duotoneSpace as theme } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import React, { ComponentPropsWithoutRef } from "react";
 
-const codify = ({ bash, js, python, html, type, plaintext, children }) => `
+const codify = ({
+  bash,
+  js,
+  python,
+  html,
+  type,
+  plaintext,
+  children,
+}: {
+  children?: string | React.ReactNode;
+  type?: string;
+} & { [key: string]: boolean | string }) => `
 ~~~${
   type || plaintext
     ? "plaintext"
@@ -19,7 +31,7 @@ const codify = ({ bash, js, python, html, type, plaintext, children }) => `
     ? "python"
     : "plaintext"
 }
-${children.replaceAll(/ *\| ?/g, "").trim()}
+${(children instanceof String ? children : "").replaceAll(/ *\| ?/g, "").trim()}
 ~~~
 `;
 
@@ -50,19 +62,35 @@ const CodeSnippet = ({
   type,
   children,
   ...props
-}) => (
-  <ReactMarkdown components={components} remarkPlugins={[gfm]} {...props}>
+}: {
+  js?: boolean;
+  bash?: boolean;
+  html?: boolean;
+  python?: boolean;
+  plaintext?: boolean;
+  type?: string;
+  children?: string & React.ReactNode;
+} & React.ComponentPropsWithoutRef<"div">) => (
+  <ReactMarkdown
+    components={components as unknown}
+    remarkPlugins={[gfm]}
+    {...props}
+  >
     {codify({ bash, js, python, html, plaintext, type, children })}
   </ReactMarkdown>
 );
 
-const MarkdownSnippet = ({ children, ...props }) => {
-  console.log(children);
-  return (
-    <ReactMarkdown components={components} remarkPlugins={[gfm]} {...props}>
-      {children}
-    </ReactMarkdown>
-  );
-};
+const MarkdownSnippet = ({
+  children,
+  ...props
+}: { children?: string } & ComponentPropsWithoutRef<"div">) => (
+  <ReactMarkdown
+    components={components as unknown}
+    remarkPlugins={[gfm]}
+    {...props}
+  >
+    {children}
+  </ReactMarkdown>
+);
 
 export { MarkdownSnippet, CodeSnippet };

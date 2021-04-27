@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { ComponentPropsWithoutRef, MouseEvent, useRef } from "react";
 import styled from "styled-components";
 
-const TiltyContainer = styled.div`
+const TiltyContainer = styled.div<{ $speed?: number }>`
   perspective: "1000px";
   will-change: transform;
   transition: ${({ $speed }) =>
@@ -20,12 +20,17 @@ export default function Tiltable({
   degY,
   deg,
   ...props
+}: ComponentPropsWithoutRef<"div"> & {
+  speed?: number;
+  degX?: number;
+  degY?: number;
+  deg?: number;
 }) {
   const tilty = useRef(null);
   const dg = { x: deg || degX || 10, y: deg || degY || 12 };
-  const calcDeg = (d, p) => 2 * d * p - d;
+  const calcDeg = (d: number, p: number) => 2 * d * p - d;
 
-  const tilt = (e) => {
+  const tilt = (e: MouseEvent) => {
     if (tilty.current === null) return;
 
     const rect = tilty.current.getBoundingClientRect();

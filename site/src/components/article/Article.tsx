@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const Article = styled.div`
+const Article = styled.div<{ fullwidth?: boolean }>`
   width: ${({ fullwidth }) => fullwidth && `width: 100vw;`};
   max-width: 50em;
   min-width: 20em;

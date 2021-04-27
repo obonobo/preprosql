@@ -7,7 +7,7 @@ const clicky = ({ distance = "0.05em" } = {}) => css`
 `;
 
 // prettier-ignore
-const TranslateDownOnClick = styled.div`
+const TranslateDownOnClick = styled.div<{ distance: string }>`
   transition: ${({ theme }) => theme
     && theme.transitions
     && theme.transitions.liftedFast

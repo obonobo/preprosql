@@ -2,7 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Triangulr from "triangulr";
-import { assetPrefix } from "../../util/utils";
+import { urlFor } from "../../util/utils";
 
 const Root = styled.div`
   position: relative;
@@ -26,7 +26,7 @@ const Foreground = styled(Root)`
 const OkEmoji = () => (
   <img
     alt="ok"
-    src={`${assetPrefix}/ok.png`}
+    src={urlFor("/ok.png")}
     style={{ border: "none", objectFit: "contain" }}
   />
 );
@@ -77,7 +77,7 @@ const TrianglesOverlay = styled.div`
   }
 `;
 
-const createTriangles = (w, h) =>
+const createTriangles = (w: number, h: number) =>
   new Triangulr(w, h, 40, 20, (path) => {
     const random = 32;
     const ratio = (path.x + path.y) / (path.cols + path.lines);

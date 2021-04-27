@@ -53,7 +53,7 @@ const ShakyBuildBadge = styled.img.attrs({
   $shakyDistance: 0.05,
   alt: "Build Badge",
   src: "https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg",
-})`
+})<{ $hovering?: boolean, $shakyDistance?: string }>`
   height: 2em;
 
   animation: ${({ $hovering }) =>
@@ -77,7 +77,7 @@ const HomeLink = styled.div.attrs(({ onClick }) => ({
     if (onClick) onClick(e);
     redirect();
   },
-}))`
+}))<{ $lifted?: boolean }>`
   transition: ${({ theme }) => theme.transitions.lifted};
   width: min(42em, 100vw);
   position: fixed;

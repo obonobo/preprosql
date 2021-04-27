@@ -1,17 +1,21 @@
-import styled, { css, keyframes } from "styled-components";
+import { ComponentPropsWithoutRef } from "react";
+import styled, {
+  css,
+  FlattenSimpleInterpolation,
+  keyframes,
+} from "styled-components";
+import $ from "../../../util/styles";
 import { urlFor } from "../../../util/utils";
 
 const WebAssemblyBadge = styled.div`
   &&& {
-    ${({ theme }) => theme && theme.mixins && theme.mixins.unselectable()}
-
+    ${$.mixins.unselectable}
     display: flex;
     place-content: center;
     place-items: center;
 
     border-radius: 20%;
-    box-shadow: ${({ theme }) =>
-      theme && theme.shadows && theme.shadows.sparse};
+    box-shadow: ${$.shadows.sparse};
 
     width: 4em;
     height: 4em;
@@ -20,7 +24,7 @@ const WebAssemblyBadge = styled.div`
     overflow: hidden;
 
     & > img {
-      ${({ theme }) => theme && theme.mixins && theme.mixins.unselectable()}
+      ${$.mixins.unselectable}
       object-fit: contain;
       width: 3em !important;
     }
@@ -28,10 +32,8 @@ const WebAssemblyBadge = styled.div`
 `;
 
 // prettier-ignore
-const CoolBadge = styled(WebAssemblyBadge)`
-  transition: ${({ theme }) => theme
-    && theme.transitions
-    && theme.transitions.liftedFast};
+const CoolBadge = styled(WebAssemblyBadge)<{ $hovering?: boolean }>`
+  transition: ${$.transitions.liftedFast};
 
   transform: rotate(-20deg);
   font-size: 0.35em;
@@ -46,7 +48,7 @@ const CoolBadge = styled(WebAssemblyBadge)`
   `}
 `;
 
-const animate = (value = "") => css`
+const animate = (value: string | FlattenSimpleInterpolation = "") => css`
   animation: ${value};
   -moz-animation: ${value};
   -webkit-animation: ${value};
@@ -83,7 +85,10 @@ const Logo = styled.img.attrs({
   left: -4em;
 `;
 
-const CoolWebAssemblyBadge = ({ hovering, ...props }) => (
+const CoolWebAssemblyBadge = ({
+  hovering,
+  ...props
+}: { hovering?: boolean } & ComponentPropsWithoutRef<"div">) => (
   <CoolBadge $hovering={hovering} {...props}>
     <Background />
     <Logo />

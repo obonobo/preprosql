@@ -1,17 +1,17 @@
+import type { AppProps } from "next/app";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
+import theme from "../src/util/styles";
 import { assetPrefix } from "../src/util/utils";
 import "./app.global.css";
-import theme from '../src/util/styles';
-
 
 const Footer = styled.footer`
   display: none;
 `;
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps }: AppProps) {
   // Below is for MUI integration with Next.js SSR
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");

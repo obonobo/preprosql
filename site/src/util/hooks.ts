@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState, MutableRefObject } from "react";
 
 /**
  * A hook that tells you when the user has scrolled away from the top of the
@@ -6,15 +6,11 @@ import { useEffect, useReducer, useState } from "react";
  */
 const useTopScrollTrigger = ({ threshold = 100 } = {}) => {
   const [awayFromTop, setAwayFromTop] = useState(false);
-
   useEffect(() => {
-    const handleScroll = () => {
-      setAwayFromTop(window.scrollY >= threshold);
-    };
+    const handleScroll = () => setAwayFromTop(window.scrollY >= threshold);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
   return awayFromTop;
 };
 
@@ -22,7 +18,10 @@ const useTopScrollTrigger = ({ threshold = 100 } = {}) => {
  * Attach an event listener to the 'scroll' event. `ref` can be a React `useRef`
  * value.
  */
-const useScrollListener = ({ ref, action = () => {} } = {}) => {
+const useScrollListener = ({
+  ref,
+  action = () => {},
+}: { ref?: MutableRefObject<any>; action?: () => void } = {}) => {
   useEffect(() => {
     const node = (ref && ref.current) || window;
     node.addEventListener("scroll", action);
@@ -34,7 +33,10 @@ const useScrollListener = ({ ref, action = () => {} } = {}) => {
  * Tells you when your element has gotten "stuck" at the top of the screen.
  * Useful for `position: sticky;` elements.
  */
-const useStickiedTrigger = ({ ref, threshold = 20 } = {}) => {
+const useStickiedTrigger = ({
+  ref,
+  threshold = 20,
+}: { ref?: MutableRefObject<any>; threshold?: number } = {}) => {
   const [triggered, setTriggered] = useState(false);
 
   useScrollListener({
@@ -47,16 +49,16 @@ const useStickiedTrigger = ({ ref, threshold = 20 } = {}) => {
   return triggered;
 };
 
+type Action = { type: "lift" } | { type: "unlift" };
+
 const useLiftReducer = () =>
   useReducer(
-    (_, action) => {
+    (_: { lifted: boolean }, action: Action) => {
       switch (action.type) {
         case "lift":
           return { lifted: true };
         case "unlift":
           return { lifted: false };
-        default:
-          throw new Error(`Bad action '${action.type}' in Home reducer`);
       }
     },
     { lifted: false }

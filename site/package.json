@@ -15,6 +15,7 @@
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
     "clsx": "^1.1.1",
+    "file-loader": "^6.2.0",
     "next": "^10.0.0",
     "prop-types": "^15.7.2",
     "react": "17.0.1",
@@ -58,7 +59,8 @@
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     },
     "moduleNameMapper": {
-      "^.+\\.(css|less|scss)$": "identity-obj-proxy"
+      "^.+\\.(css|less|scss)$": "identity-obj-proxy",
+      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "identity-obj-proxy"
     }
   },
   "babel": {
@@ -111,7 +113,13 @@
       "comma-dangle": "off",
       "no-underscore-dangle": "off",
       "react/no-array-index-key": "warn",
-      "react/forbid-prop-types": "warn"
+      "react/forbid-prop-types": "warn",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": true
+        }
+      ]
     }
   }
 }

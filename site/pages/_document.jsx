@@ -1,29 +1,42 @@
-import { ServerStyleSheets } from "@material-ui/core";
+import { ServerStyleSheets as ServerStyleSheetsMUI } from "@material-ui/core";
+import { ServerStyleSheet as ServerStyleSheetsSC } from "styled-components";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 import { Children } from "react";
 
 /**
- * This `_document.js` includes some code for fixing the MUI "className did not
- * match" bug that happens with Next.js SSR.
+ * This `_document.js` includes some code for fixing the "className did not
+ * match" bug that happens with Next.js SSR with styled-components and MUI.
  */
-class MyDocument extends Document {
+export default class MyDocument extends Document {
   static async getInitialProps(ctx) {
-    const sheets = new ServerStyleSheets();
+    const sheetMUI = new ServerStyleSheetsMUI();
+    const sheetSC = new ServerStyleSheetsSC();
     const originalRenderPage = ctx.renderPage;
 
-    ctx.renderPage = () =>
-      originalRenderPage({
-        enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
-      });
+    try {
+      ctx.renderPage = () =>
+        originalRenderPage({
+          enhanceApp: (App) => (props) =>
+            sheetSC.collectStyles(sheetMUI.collect(<App {...props} />)),
+        });
 
-    const initialProps = await Document.getInitialProps(ctx);
-    return {
-      ...initialProps,
-      styled: [
-        ...Children.toArray(initialProps.styles),
-        sheets.getStyleElement(),
-      ],
-    };
+      const initialProps = await Document.getInitialProps(ctx);
+      return {
+        ...initialProps,
+        styled: [
+          ...Children.toArray(initialProps.styles),
+          sheetMUI.getStyleElement(),
+        ],
+        styles: (
+          <>
+            {initialProps.styles}
+            {sheetSC.getStyleElement()}
+          </>
+        ),
+      };
+    } finally {
+      sheetSC.seal();
+    }
   }
 
   render() {
@@ -38,5 +51,3 @@ class MyDocument extends Document {
     );
   }
 }
-
-export default MyDocument;

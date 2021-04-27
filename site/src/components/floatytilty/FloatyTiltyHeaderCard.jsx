@@ -158,8 +158,8 @@ const Contents = () => {
   const [hovering, setHovering] = useState(false);
   const handleEnter = useCallback(() => setHovering(true), []);
   const handleLeave = useCallback(() => setHovering(false), []);
-
   const classes = makeStyles({ root: { height: "16em" } })();
+
   return (
     <ContentsBase
       classes={classes}

@@ -12,16 +12,17 @@ const redirect = (path = "/") =>
  *
  * Utility template literal parser
  *
- * @param {string} str
+ * @param {string | TemplateStringsArray | string[]} str
  * @returns
  */
-const style = (str = "") => {
+const style = (str: string | TemplateStringsArray | string[] = "") => {
   const s = {};
-  const myString = (str instanceof String ? str : str.join(""))
+  const myString = (str instanceof Array ? str.join("") : str)
     .replace(/ {2,}/g, "")
-    .replace(/\n/g, "");
+    .replace(/\n/g, "")
+    .trim();
 
-  const formatStringToCamelCase = (someString) => {
+  const formatStringToCamelCase = (someString: string) => {
     const splitted = someString.split("-");
     if (splitted.length === 1) return splitted[0];
     return (

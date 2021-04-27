@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { CoolWebAssemblyBadge } from "../../navbar/Buttons";
 import Article from "../Article";
 import { CodeSnippet } from "../CodeSnippet";
 
@@ -64,7 +63,7 @@ const CoolLink = styled.a.attrs(({ children }) => ({
   href: children,
 }))``;
 
-export default function Wiki({ ...props }) {
+export default function Wiki(props: React.ComponentPropsWithoutRef<"div">) {
   return (
     <Article {...props}>
       <h1>How-To (SOEN-363)</h1>

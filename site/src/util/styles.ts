@@ -1,9 +1,9 @@
-import { css } from "styled-components";
+import { css, DefaultTheme } from "styled-components";
 
 const purple = ({ opacity = 1 } = {}) => `rgba(39, 0, 84, ${opacity})`;
 const blue = ({ opacity = 1 } = {}) => `hsla(240, 100%, 20%, ${opacity})`;
 
-const theme = {
+const theme: DefaultTheme = {
   colors: {
     sqlRed: "hsl(0, 100%, 30%)",
     preProBlue: blue(),
@@ -34,14 +34,17 @@ const theme = {
   },
 
   mixins: {
-    unselectable: ({ pointerEvents = false } = {}) => css`
-      ${!pointerEvents && "pointer-events: none;"}
-      user-select: none;
-      -moz-user-select: none;
-      -webkit-user-drag: none;
-      -webkit-user-select: none;
-      -ms-user-select: none;
-    `,
+    unselectable: ({
+      pointerEvents = false,
+    }: { pointerEvents?: boolean } = {}) =>
+      css`
+        ${!pointerEvents && "pointer-events: none;"}
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-drag: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+      `.toString(),
   },
 };
 

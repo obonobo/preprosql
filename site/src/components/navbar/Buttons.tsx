@@ -1,5 +1,10 @@
 import { Button } from "@material-ui/core";
-import { useCallback, useContext, useState } from "react";
+import {
+  ComponentPropsWithoutRef,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { LiftedContext } from "../../util/contexts";
 import defaultTheme from "../../util/styles";
@@ -74,7 +79,7 @@ const Contents = styled.div`
   flex-shrink: 0;
 `;
 
-const DownloadNow = (props) => (
+const DownloadNow = (props: ComponentPropsWithoutRef<"div">) => (
   <FloatyTiltyButton {...props}>
     <Contents>
       <Text style={$`inset: unset;`}>Download Now!</Text>
@@ -94,7 +99,7 @@ const TryInBrowserButtonContents = () => {
   );
 };
 
-const TryInBrowser = (props) => (
+const TryInBrowser = (props: ComponentPropsWithoutRef<"div">) => (
   <FloatyTiltyButton {...props}>
     <TryInBrowserButtonContents />
   </FloatyTiltyButton>

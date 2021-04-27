@@ -1,12 +1,16 @@
+import React from "react";
 import Article from "../Article";
-import CodeSnippet from "../CodeSnippet";
+import { CodeSnippet } from "../CodeSnippet";
 
 export default function DemoArticle({
   loremIpsum,
   times = 1,
   children,
   ...props
-}) {
+}: {
+  loremIpsum?: boolean;
+  times?: number;
+} & React.ComponentPropsWithoutRef<"div">) {
   const lorem = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
     do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

@@ -1,10 +1,10 @@
-import { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { LiftedContext } from "../../util/contexts";
 import { useStickiedTrigger } from "../../util/hooks";
 
 // prettier-ignore
-const BarBase = styled.div`
+const BarBase = styled.div<{ $lifted: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -33,14 +33,14 @@ const BarBase = styled.div`
   & > div {
     display: none;
 
-    ${({$lifted}) => $lifted && `
+    ${({ $lifted }) => $lifted && `
       flex-grow: 0;
       display: grid;
     `}
   }
 `;
 
-const Navbar = (props) => {
+const Navbar = (props: React.ComponentPropsWithoutRef<"div">) => {
   const me = useRef(null);
   const stickied = useStickiedTrigger({ ref: me, threshold: 100 });
   const { setLifted } = useContext(LiftedContext);

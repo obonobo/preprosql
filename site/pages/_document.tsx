@@ -1,14 +1,20 @@
 import { ServerStyleSheets as ServerStyleSheetsMUI } from "@material-ui/core";
-import { ServerStyleSheet as ServerStyleSheetsSC } from "styled-components";
-import Document, { Html, Head, Main, NextScript } from "next/document";
+import Document, {
+  DocumentContext,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from "next/document";
 import { Children } from "react";
+import { ServerStyleSheet as ServerStyleSheetsSC } from "styled-components";
 
 /**
  * This `_document.js` includes some code for fixing the "className did not
  * match" bug that happens with Next.js SSR with styled-components and MUI.
  */
 export default class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+  static async getInitialProps(ctx: DocumentContext) {
     const sheetMUI = new ServerStyleSheetsMUI();
     const sheetSC = new ServerStyleSheetsSC();
     const originalRenderPage = ctx.renderPage;

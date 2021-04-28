@@ -1,6 +1,5 @@
 import React from "react";
 import Article from "../Article";
-import { CodeSnippet } from "../CodeSnippet";
 
 export default function DemoArticle({
   loremIpsum,
@@ -21,16 +20,8 @@ export default function DemoArticle({
     est laborum.
   `;
 
-  const codeSnippet = `
-    const omg = wtf;
-    function doSomething({ param1 }) {
-      var omg = \`Here we go again\`
-    }
-  `;
-
   return (
     <Article {...props}>
-      <CodeSnippet js>{codeSnippet}</CodeSnippet>
       {loremIpsum
         ? [...Array(times).keys()].reduce((p) => p + lorem, lorem)
         : children}

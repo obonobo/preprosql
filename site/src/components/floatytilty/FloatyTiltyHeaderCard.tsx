@@ -1,7 +1,7 @@
 import { ButtonBase, makeStyles } from "@material-ui/core";
-import { useCallback, useContext, useState } from "react";
-import styled from "styled-components";
-import { LiftedContext } from "../../util/contexts";
+import { ComponentPropsWithoutRef, useState } from "react";
+import styled, { css } from "styled-components";
+import { useLifted } from "../../state/LiftedContext";
 import defaultTheme from "../../util/styles";
 import { redirect } from "../../util/utils";
 import TranslateDownOnClick from "../extras/TranslateDownOnClick";
@@ -21,9 +21,10 @@ const AppTitle = styled.h1.attrs({
   font-size: 8em;
   margin-bottom: 0.1em;
 
-  ${({ theme }) => `
+  ${({ theme }) => css`
     color: ${theme.colors.preProBlue};
     font-family: ${theme.fonts.B612};
+
     & span {
       color: ${theme.colors.sqlRed};
       font-family: ${theme.fonts.IBMPlexSerif};
@@ -32,6 +33,7 @@ const AppTitle = styled.h1.attrs({
 `;
 
 const LinkToBuilds = styled.a.attrs({
+  theme: defaultTheme,
   href: "https://github.com/obonobo/preprosql/actions/workflows/test.yml",
 })`
   height: 2em;
@@ -41,8 +43,7 @@ const LinkToBuilds = styled.a.attrs({
 
   &,
   & > img {
-    transition: ${({ theme }) =>
-      theme && theme.transitions && theme.transitions.liftedFast};
+    transition: ${({ theme }) => theme.transitions.liftedFast};
     margin: 0;
     padding: 0;
   }
@@ -53,14 +54,15 @@ const ShakyBuildBadge = styled.img.attrs({
   $shakyDistance: 0.05,
   alt: "Build Badge",
   src: "https://github.com/obonobo/preprosql/actions/workflows/test.yml/badge.svg",
-})<{ $hovering?: boolean, $shakyDistance?: string }>`
+})<{ $hovering?: boolean, $shakyDistance?: number }>`
   height: 2em;
 
-  animation: ${({ $hovering }) =>
-    $hovering ? "200ms linear 0s infinite shaky" : ""};
+  animation: ${({ $hovering }) => $hovering && css`
+    200ms linear 0s infinite shaky
+  `};
 
   @keyframes shaky {
-      ${({ $shakyDistance }) => $shakyDistance && `
+      ${({ $shakyDistance }) => $shakyDistance && css`
         0% { transform: translate(-${$shakyDistance}em, -${$shakyDistance}em); }
        20% { transform: translate( ${$shakyDistance}em,  ${$shakyDistance}em); }
        40% { transform: translate(-${$shakyDistance}em,  ${$shakyDistance}em); }
@@ -90,7 +92,7 @@ const HomeLink = styled.div.attrs(({ onClick }) => ({
     cursor: pointer;
   }
 
-  ${({ $lifted }) => $lifted && `
+  ${({ $lifted }) => $lifted && css`
     top: 0.4em;
     left: 0%;
     transform: translate(-30%, -80%) scale(0.3);
@@ -147,7 +149,6 @@ const ContentsBase = styled(ButtonBase)`
     font-size: 1rem;
     padding: 0.5em 0em;
     border-radius: inherit;
-
     display: flex;
     flex-direction: column;
     place-items: center;
@@ -155,10 +156,10 @@ const ContentsBase = styled(ButtonBase)`
 `;
 
 const Contents = () => {
-  const [hovering, setHovering] = useState(false);
-  const handleEnter = useCallback(() => setHovering(true), []);
-  const handleLeave = useCallback(() => setHovering(false), []);
   const classes = makeStyles({ root: { height: "16em" } })();
+  const [hovering, setHovering] = useState(false);
+  const handleEnter = () => setHovering(true);
+  const handleLeave = () => setHovering(false);
 
   return (
     <ContentsBase
@@ -176,8 +177,11 @@ const Contents = () => {
   );
 };
 
-const FloatyTiltyHeaderCard = ({ className, ...props }) => {
-  const { lifted } = useContext(LiftedContext);
+const FloatyTiltyHeaderCard = ({
+  className,
+  ...props
+}: ComponentPropsWithoutRef<"div">) => {
+  const lifted = useLifted();
   return (
     <HomeLink $lifted={lifted} className={className} {...props}>
       <TranslateDownOnClick distance="0.6em">

@@ -1,4 +1,6 @@
-import { useEffect, useReducer, useState, MutableRefObject } from "react";
+import { useMediaQuery } from "@material-ui/core";
+import { MutableRefObject, useEffect, useState } from "react";
+import { useLiftedDispatch } from "../state/LiftedContext";
 
 /**
  * A hook that tells you when the user has scrolled away from the top of the
@@ -49,24 +51,26 @@ const useStickiedTrigger = ({
   return triggered;
 };
 
-type Action = { type: "lift" } | { type: "unlift" };
+/**
+ * Executes
+ */
+const useSmallScreenLiftTrigger = () => {
+  const smallScreen = useMediaQuery("(max-width: 45em)");
+  const dispatchLifted = useLiftedDispatch();
 
-const useLiftReducer = () =>
-  useReducer(
-    (_: { lifted: boolean }, action: Action) => {
-      switch (action.type) {
-        case "lift":
-          return { lifted: true };
-        case "unlift":
-          return { lifted: false };
-      }
-    },
-    { lifted: false }
+  useEffect(
+    () =>
+      dispatchLifted({
+        type: "setLift",
+        newValue: smallScreen,
+      }),
+    [smallScreen]
   );
+};
 
 export {
   useTopScrollTrigger,
   useScrollListener,
   useStickiedTrigger,
-  useLiftReducer,
+  useSmallScreenLiftTrigger,
 };

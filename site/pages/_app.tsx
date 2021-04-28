@@ -1,3 +1,5 @@
+// import "highlight.js/styles/railscasts.css";
+import "highlight.js/styles/atelier-cave-dark.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import PropTypes from "prop-types";

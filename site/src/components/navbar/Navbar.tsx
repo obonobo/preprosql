@@ -1,10 +1,13 @@
-import React, { useContext, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { LiftedContext } from "../../util/contexts";
+import React, { ComponentPropsWithoutRef, useEffect, useRef } from "react";
+import styled, { css } from "styled-components";
+import { useLiftedDispatch } from "../../state/LiftedContext";
 import { useStickiedTrigger } from "../../util/hooks";
+import defaultTheme from "../../util/styles";
 
 // prettier-ignore
-const BarBase = styled.div<{ $lifted: boolean }>`
+const BarBase = styled.div.attrs({
+  theme: defaultTheme,
+})<{ $lifted: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -12,18 +15,16 @@ const BarBase = styled.div<{ $lifted: boolean }>`
   margin: 0px !important;
   margin-bottom: -4em !important;
   padding: 0.2em;
-  width: 100%;
+  width: calc(100% + 13px);
   height: 5em;
   z-index: 1500;
 
   top: 0;
   position: sticky;
   border-top: 0.5em solid rgba(131, 131, 131, 0.575);
-  transition: ${({ theme }) => theme
-    && theme.transitions
-    && theme.transitions.lifted};
+  transition: ${({ theme }) => theme.transitions.lifted};
 
-  ${({ $lifted, theme }) => $lifted && `
+  ${({ $lifted, theme }) => $lifted && css`
     box-shadow: 0px 8px 12px -6px rgba(71, 71, 71, 0.788);
     background-color: ${theme.colors.seeThroughPurple};
     border-top: 0.5em ${theme.colors.seeThroughPurple};
@@ -33,18 +34,21 @@ const BarBase = styled.div<{ $lifted: boolean }>`
   & > div {
     display: none;
 
-    ${({ $lifted }) => $lifted && `
+    ${({ $lifted }) => $lifted && css`
       flex-grow: 0;
       display: grid;
     `}
   }
 `;
 
-const Navbar = (props: React.ComponentPropsWithoutRef<"div">) => {
+const Navbar = (props: ComponentPropsWithoutRef<"div">) => {
   const me = useRef(null);
   const stickied = useStickiedTrigger({ ref: me, threshold: 100 });
-  const { setLifted } = useContext(LiftedContext);
-  useEffect(() => setLifted(stickied));
+  const liftedDispatch = useLiftedDispatch();
+  useEffect(() => liftedDispatch({ type: "setLift", newValue: stickied }), [
+    stickied,
+  ]);
+
   return <BarBase ref={me} $lifted={stickied} {...props} />;
 };
 

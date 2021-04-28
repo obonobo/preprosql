@@ -1,6 +1,6 @@
-import { ComponentPropsWithoutRef, useContext } from "react";
+import { ComponentPropsWithoutRef } from "react";
 import styled from "styled-components";
-import { LiftedContext } from "../../util/contexts";
+import { useLifted } from "../../state/LiftedContext";
 import $ from "../../util/styles";
 import { DownloadNow, TryInBrowser } from "../navbar/Buttons";
 
@@ -62,9 +62,8 @@ const Buttons = styled(ButtonGrid)<{ $lifted: boolean }>`
   }
 `;
 
-const DynamicButtons = (props: ComponentPropsWithoutRef<"div">) => {
-  const { lifted } = useContext(LiftedContext);
-  return <Buttons $lifted={lifted} {...props} />;
-};
+const DynamicButtons = (props: ComponentPropsWithoutRef<"div">) => (
+  <Buttons $lifted={useLifted()} {...props} />
+);
 
 export { ButtonGrid, DynamicButtons };

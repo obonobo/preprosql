@@ -6,11 +6,9 @@ const Container = styled.div`
   place-content: center;
   place-items: center;
   display: flex;
-  height: 100vh;
-  width: 100vw;
 `;
 
-const Progress = styled(CircularProgress)`
+const Progress = styled(CircularProgress).attrs({ color: "secondary" })`
   height: 5em;
   width: 5em;
 `;
@@ -18,7 +16,7 @@ const Progress = styled(CircularProgress)`
 export default function Spinner(props: React.ComponentPropsWithoutRef<"div">) {
   return (
     <Container {...props}>
-      <Progress color="secondary" />
+      <Progress />
     </Container>
   );
 }

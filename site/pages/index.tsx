@@ -1,14 +1,11 @@
-import { useMediaQuery } from "@material-ui/core";
-import { useState } from "react";
 import styled from "styled-components";
-import DemoArticle from "../src/components/article/articles/DemoArticle";
 import Wiki from "../src/components/article/articles/Wiki";
 import { DynamicButtons } from "../src/components/floatytilty/ButtonGrid";
 import { FloatyTiltyHeaderCard } from "../src/components/floatytilty/FloatyTiltyHeaderCard";
 import { Navbar } from "../src/components/navbar/Navbar";
 import { TriangleTopbar } from "../src/components/triangles/TriangleTopbar";
-import { LiftedContext } from "../src/util/contexts";
-import { style as $ } from "../src/util/utils";
+import { LiftedContextProvider } from "../src/state/LiftedContext";
+import { SmallScreenLiftObserver } from "../src/util/utility-components";
 
 const Content = styled.div`
   justify-content: center;
@@ -27,24 +24,19 @@ const FloatingHeader = styled(FloatyTiltyHeaderCard)`
 `;
 
 const Home = () => {
-  const [lifted, setLifted] = useState(false);
-  const smallScreen = useMediaQuery("(max-width: 45em)");
-
   return (
-    <LiftedContext.Provider
-      value={{ lifted: lifted || smallScreen, setLifted }}
-    >
+    <LiftedContextProvider>
+      <SmallScreenLiftObserver />
       <main>
         <TriangleTopbar />
         <FloatingHeader />
         <DynamicButtons />
         <Navbar />
         <Content>
-          <DemoArticle loremIpsum times={50} style={{ marginTop: "6em" }} />
-          <Wiki style={$`width: 100vw;`} />
+          <Wiki />
         </Content>
       </main>
-    </LiftedContext.Provider>
+    </LiftedContextProvider>
   );
 };
 

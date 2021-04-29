@@ -1,5 +1,5 @@
 import { CircularProgress } from "@material-ui/core";
-import React from "react";
+import { ComponentPropsWithoutRef } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -13,7 +13,7 @@ const Progress = styled(CircularProgress).attrs({ color: "secondary" })`
   width: 5em;
 `;
 
-export default function Spinner(props: React.ComponentPropsWithoutRef<"div">) {
+export default function Spinner(props: ComponentPropsWithoutRef<"div">) {
   return (
     <Container {...props}>
       <Progress />

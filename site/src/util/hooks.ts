@@ -64,7 +64,7 @@ const useSmallScreenLiftTrigger = () => {
         type: "setLift",
         newValue: smallScreen,
       }),
-    [smallScreen]
+    [smallScreen, dispatchLifted]
   );
 };
 

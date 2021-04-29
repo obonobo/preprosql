@@ -61,7 +61,7 @@ const useLifted = () => useContext(LiftedStoreContext).lifted;
  */
 const useLiftedDispatch = () => useContext(LiftedDispatchContext);
 
-export default LiftedStoreContext;
+export default LiftedContextProvider;
 export type { LiftedStore, LiftedAction };
 export {
   useLifted,

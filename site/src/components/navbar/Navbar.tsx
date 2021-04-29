@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, useEffect, useRef } from "react";
+import { ComponentPropsWithoutRef, useEffect, useRef } from "react";
 import styled, { css } from "styled-components";
 import { useLiftedDispatch } from "../../state/LiftedContext";
 import { useStickiedTrigger } from "../../util/hooks";
@@ -47,6 +47,7 @@ const Navbar = (props: ComponentPropsWithoutRef<"div">) => {
   const liftedDispatch = useLiftedDispatch();
   useEffect(() => liftedDispatch({ type: "setLift", newValue: stickied }), [
     stickied,
+    liftedDispatch,
   ]);
 
   return <BarBase ref={me} $lifted={stickied} {...props} />;

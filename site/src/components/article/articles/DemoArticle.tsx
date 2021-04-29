@@ -1,5 +1,5 @@
-import React from "react";
-import Article from "../Article";
+import { ComponentPropsWithoutRef } from "react";
+import { Article } from "../Article";
 
 export default function DemoArticle({
   loremIpsum,
@@ -9,7 +9,7 @@ export default function DemoArticle({
 }: {
   loremIpsum?: boolean;
   times?: number;
-} & React.ComponentPropsWithoutRef<"div">) {
+} & ComponentPropsWithoutRef<"div">) {
   const lorem = `
     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
     do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

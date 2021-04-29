@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { useSmallScreenLiftTrigger } from "../util/hooks";
+import { useSmallScreenLiftTrigger } from "./hooks";
 
 /**
  * A utility component that listens for changes to screen size and reacts by
@@ -15,4 +15,5 @@ const SmallScreenLiftObserver = memo(() => {
   return <></>;
 });
 
+export default SmallScreenLiftObserver;
 export { SmallScreenLiftObserver };

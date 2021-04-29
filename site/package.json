@@ -28,6 +28,7 @@
     "triangulr": "^1.0.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.0",
     "@testing-library/dom": "^7.30.3",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
@@ -35,9 +36,11 @@
     "@types/marked": "^2.0.2",
     "@types/react-syntax-highlighter": "^13.5.0",
     "@types/styled-components": "^5.1.9",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
     "babel-jest": "^26.6.3",
     "babel-plugin-styled-components": "^1.12.0",
-    "eslint": "^5.16.0",
+    "eslint": "^7.25.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-import": "^2.22.1",
@@ -45,9 +48,9 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
-    "jest-dom": "^4.0.0",
     "typescript": "^4.2.4"
   },
   "jest": {
@@ -83,12 +86,57 @@
     ]
   },
   "eslintConfig": {
+    "ignorePatterns": [
+      "**/*.d.ts"
+    ],
     "env": {
       "browser": true,
       "es6": true,
-      "node": true
+      "node": true,
+      "jest": true
     },
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
+        },
+        "webpack": {}
+      },
+      "import/extensions": [
+        ".js",
+        ".mjs",
+        ".jsx",
+        ".ts",
+        ".tsx"
+      ],
+      "import/parsers": {
+        "@typescript-eslint/parser": [
+          ".ts",
+          ".tsx"
+        ]
+      },
+      "import/core-modules": [],
+      "import/ignore": [
+        "node_modules",
+        "\\.(coffee|scss|css|less|hbs|svg|json)$"
+      ]
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "react",
+      "react-hooks"
+    ],
     "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended",
       "airbnb",
       "prettier"
     ],
@@ -103,12 +151,10 @@
       "ecmaVersion": 2018,
       "sourceType": "module"
     },
-    "plugins": [
-      "react"
-    ],
     "rules": {
       "quotes": "off",
       "object-curly-newline": "off",
+      "no-nested-ternary": "off",
       "implicit-arrow-linebreak": "off",
       "react/react-in-jsx-scope": "off",
       "jsx-a11y/media-has-caption": "off",
@@ -118,10 +164,34 @@
       "no-underscore-dangle": "off",
       "react/no-array-index-key": "warn",
       "react/forbid-prop-types": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/rules-of-hooks": "error",
+      "react/require-default-props": "off",
       "import/no-extraneous-dependencies": [
         "error",
         {
           "devDependencies": true
+        }
+      ],
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+        }
+      ],
+      "react/jsx-filename-extension": [
+        2,
+        {
+          "extensions": [
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx"
+          ]
         }
       ]
     }

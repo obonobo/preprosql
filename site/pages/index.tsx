@@ -23,21 +23,19 @@ const FloatingHeader = styled(FloatyTiltyHeaderCard)`
   flex-grow: 0;
 `;
 
-const Home = () => {
-  return (
-    <LiftedContextProvider>
-      <SmallScreenLiftObserver />
-      <main>
-        <TriangleTopbar />
-        <FloatingHeader />
-        <DynamicButtons />
-        <Navbar />
-        <Content>
-          <Wiki />
-        </Content>
-      </main>
-    </LiftedContextProvider>
-  );
-};
+const Home = () => (
+  <LiftedContextProvider>
+    <SmallScreenLiftObserver />
+    <main>
+      <TriangleTopbar />
+      <FloatingHeader />
+      <DynamicButtons />
+      <Navbar />
+      <Content>
+        <Wiki />
+      </Content>
+    </main>
+  </LiftedContextProvider>
+);
 
 export default Home;

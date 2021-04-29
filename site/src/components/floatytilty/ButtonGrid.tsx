@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { ComponentPropsWithoutRef } from "react";
 import styled from "styled-components";
 import { useLifted } from "../../state/LiftedContext";
@@ -53,7 +54,7 @@ const Buttons = styled(ButtonGrid)<{ $lifted: boolean }>`
     button {
       transition: ${$.transitions.lifted};
       backdrop-filter: sepia(20%) brightness(200%) blur(2px);
-      background-color: ${($.colors.createBlue as ((a: any) => string))({ opacity: 0.8 })};
+      background-color: ${($.colors.createBlue as ((_: any) => string))({ opacity: 0.8 })};
       ${({ $lifted }) => $lifted && `
           background-color: rgba(255, 255, 255, 0.1);
           backdrop-filter: blur(5px);

@@ -38,6 +38,7 @@ const Article = styled.article<{ fullwidth?: boolean }>`
 
 const MarkdownArticle = memo(({ src, children, ...props }: ArticleProps) => {
   const [text, setText] = useState("");
+
   useEffect(() => {
     (async () => {
       let newText = children ?? "";

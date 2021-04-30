@@ -72,8 +72,9 @@ const ArticleContextProvider = ({ children }: { children?: ReactNode }) => {
   );
 };
 
-const useArticleStore = () => useContext(ArticleStoreContext);
-const useArticleStoreDispatch = () => useContext(ArticleDispatchContext);
+const useArticleStore = (): ArticleStore => useContext(ArticleStoreContext);
+const useArticleStoreDispatch = (): Dispatch<ArticleAction> =>
+  useContext(ArticleDispatchContext);
 
 export default ArticleContextProvider;
 export type { ArticleAction };

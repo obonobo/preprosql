@@ -1,10 +1,14 @@
-const weAreInProduction = process.env.NODE_ENV === "production";
-const assetPrefix = weAreInProduction ? "/preprosql" : "";
+// const weAreInProduction = process.env.NODE_ENV === "production";
+// const assetPrefix = weAreInProduction ? "/preprosql" : "";
 
-const urlFor = (path = "/") => `${assetPrefix}${path}`;
+import { CSSProperties } from "react";
 
-const redirect = (path = "/") =>
-  window && window.location && window.location.replace(`${assetPrefix}${path}`);
+const assetPrefix = process.env.ASSET_PREFIX || "";
+
+const urlFor = (path = "/"): string => `${assetPrefix}${path}`;
+
+const redirect = (path = "/"): void =>
+  window?.location?.replace(`${assetPrefix}${path}`);
 
 /**
  * Convert template literal backtick-strings to React style objects for use as
@@ -15,7 +19,9 @@ const redirect = (path = "/") =>
  * @param {string | TemplateStringsArray | string[]} str
  * @returns
  */
-const style = (str: string | TemplateStringsArray | string[] = "") => {
+const style = (
+  str: string | TemplateStringsArray | string[] = ""
+): CSSProperties => {
   const s = {};
   const myString = (str instanceof Array ? str.join("") : str)
     .replace(/ {2,}/g, "")
@@ -44,5 +50,4 @@ const style = (str: string | TemplateStringsArray | string[] = "") => {
   return s;
 };
 
-export default weAreInProduction;
-export { weAreInProduction, assetPrefix, redirect, style, urlFor };
+export { assetPrefix, redirect, style, urlFor };

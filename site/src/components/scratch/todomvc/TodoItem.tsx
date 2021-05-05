@@ -1,5 +1,13 @@
-import { useCallback, useContext } from "react";
+import {
+  ComponentPropsWithoutRef,
+  memo,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import styled, { css } from "styled-components";
+import { useClickCounter } from "./hooks";
+import Input from "./Input";
 import { StoreContext, Todo } from "./StoreContext";
 
 const fastTransition = css`
@@ -97,8 +105,70 @@ const ItemText = styled.span<{ completed?: boolean }>`
     `}
 `;
 
+const InputWithoutShadow = styled(Input)`
+  &&& {
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    box-shadow: none;
+    padding: 0.7em 0;
+    margin: 0 1em;
+    height: 1.2em;
+    border-bottom: 2px dashed rgba(128, 128, 128, 0.5);
+  }
+`;
+
+const ItemTextOrEditItem = memo(
+  ({
+    edit,
+    item,
+    submit,
+    ...props
+  }: { edit?: boolean; item: Todo; submit: (text: string) => void } & (
+    | ComponentPropsWithoutRef<"input">
+    | ComponentPropsWithoutRef<"span">
+  )) => {
+    const [text, setText] = useState(item.text);
+    const submitEdit = useCallback(() => submit(text), [text, submit]);
+
+    const handleKeyDown = useCallback(
+      ({ key }: { key: string }) =>
+        key.toLowerCase() === "enter" && submitEdit(),
+      [submitEdit]
+    );
+
+    const handleChange = useCallback(
+      ({ target: value }) => setText(value.value),
+      [setText]
+    );
+
+    return (
+      <>
+        {edit ? (
+          <InputWithoutShadow
+            {...props}
+            value={text}
+            onBlur={submitEdit}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
+        ) : (
+          <ItemText
+            {...props}
+            onClick={props.onClick}
+            completed={item.completed}
+          >
+            {item.text}
+          </ItemText>
+        )}
+      </>
+    );
+  }
+);
+
+ItemTextOrEditItem.displayName = "ItemTextOrEditItem";
+
 const TodoItem = ({ item }: { item: Todo }): JSX.Element => {
   const { dispatch } = useContext(StoreContext);
+  const [isSet, onClick, reset] = useClickCounter();
 
   const toggleCompleted = useCallback(
     () =>
@@ -118,10 +188,40 @@ const TodoItem = ({ item }: { item: Todo }): JSX.Element => {
     [dispatch, item]
   );
 
+  const consumeInput = useCallback(
+    ({ target: value }) =>
+      dispatch({
+        type: "update",
+        item: {
+          ...item,
+          text: typeof value === "string" ? value : item.text,
+        },
+      }),
+    [dispatch, item]
+  );
+
+  const submitEdit = useCallback(
+    (text: string) => {
+      if (text === "") {
+        deleteItem();
+      } else {
+        consumeInput({ target: text });
+        reset();
+      }
+    },
+    [reset, consumeInput, deleteItem]
+  );
+
   return (
     <TodoItemBase>
       <Checkbox checked={item.completed} onClick={toggleCompleted} />
-      <ItemText completed={item.completed}>{item.text}</ItemText>
+      <ItemTextOrEditItem
+        autoFocus
+        item={item}
+        edit={isSet}
+        submit={submitEdit}
+        onClick={onClick as () => void}
+      />
       <DeleteItemButton onClick={deleteItem} />
     </TodoItemBase>
   );

@@ -23,7 +23,7 @@ const FloatingHeader = styled(FloatyTiltyHeaderCard)`
   flex-grow: 0;
 `;
 
-const Home = () => (
+const Home = (): JSX.Element => (
   <LiftedContextProvider>
     <SmallScreenLiftObserver />
     <main>

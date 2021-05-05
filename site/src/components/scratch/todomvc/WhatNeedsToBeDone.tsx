@@ -10,6 +10,7 @@ import {
 import styled, { css } from "styled-components";
 import FilterPicker from "./Filter";
 import { useFilter } from "./hooks";
+import Input from "./Input";
 import { StoreContext } from "./StoreContext";
 import TodoItem from "./TodoItem";
 import ToggleSelectAll from "./ToggleSelectAll";
@@ -18,32 +19,6 @@ const Root = styled.div`
   position: relative;
   width: min-content;
   height: 4.6em;
-`;
-
-const Input = styled.input<{ $emptyList?: boolean }>`
-  border: 0px solid grey;
-  border-radius: 5px 5px 0px 0px;
-  padding: 1em 4em;
-  font-size: 1.3rem;
-  margin: 0.1em 0.7em;
-  width: 100%;
-  box-sizing: border-box;
-  background: white;
-  box-shadow: 0px 11px 67px -4px rgba(0, 0, 0, 0.6);
-  z-index: 50;
-  position: relative;
-  inset: 0 auto auto 0;
-  font-family: "Noto Serif", "DejaVu Serif", "Serif", serif;
-
-  :focus {
-    outline: none;
-  }
-
-  ${({ $emptyList }) =>
-    $emptyList &&
-    css`
-      border-radius: 5px;
-    `}
 `;
 
 const PlaceholderText = styled.div.attrs<{ $emptyInput?: boolean }>(

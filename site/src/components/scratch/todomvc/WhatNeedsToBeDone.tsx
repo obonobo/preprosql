@@ -57,7 +57,8 @@ const PlaceholderText = styled.div.attrs<{ $emptyInput?: boolean }>(
   user-select: none;
   position: relative;
   text-align: left;
-  inset: -2em auto auto -4.85em;
+  inset: -2em auto auto -50%;
+  transform: translate(83%, 0);
   z-index: 100;
   color: rgba(160, 160, 160);
   opacity: 82.9%;

@@ -21,14 +21,14 @@ const Checkbox = styled.span.attrs<{ checked?: boolean }>(({ checked }) => ({
   border-radius: 50%;
   border: 1px dashed #808080;
   background: rgba(255, 255, 255, 0.178);
-  display: flex;
+  color: rgba(0, 128, 0, 0.623);
+  font-size: 1.7rem;
+  font-weight: 900;
   place-content: center;
-  padding: 0.1em;
+  display: flex;
   width: 1em;
   height: 1em;
-  font-size: 1.7rem;
-  color: rgba(0, 128, 0, 0.623);
-  font-weight: 900;
+  padding: 0.1em;
 
   :hover {
     cursor: pointer;
@@ -55,10 +55,10 @@ const TodoItemBase = styled.div`
 
   padding: 0.5em 1em;
   box-sizing: border-box;
+  word-wrap: break-word;
   align-items: center;
   text-align: start;
   font-size: 1.7rem;
-  word-wrap: break-word;
 
   &,
   & * {
@@ -91,11 +91,11 @@ const DeleteItemButton = styled.span.attrs({
 
 const ItemText = styled.span<{ completed?: boolean }>`
   transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
-  padding: 0 0 0 1em;
   box-sizing: border-box;
   word-wrap: break-word;
-  width: 100%;
+  padding: 0 0 0 1em;
   max-width: 20em;
+  width: 100%;
 
   ${({ completed }) =>
     completed &&
@@ -105,27 +105,25 @@ const ItemText = styled.span<{ completed?: boolean }>`
     `}
 `;
 
-const InputWithoutShadow = styled(Input)`
+const CleanWhiteInput = styled(Input)`
   &&& {
+    border-bottom: 2px dashed rgba(128, 128, 128, 0.5);
     transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
     box-shadow: none;
     padding: 0.7em 0;
     margin: 0 1em;
     height: 1.2em;
-    border-bottom: 2px dashed rgba(128, 128, 128, 0.5);
   }
 `;
 
+type ItemTextOrEditItemProps = {
+  edit?: boolean;
+  item: Todo;
+  submit: (text: string) => void;
+} & (ComponentPropsWithoutRef<"input"> | ComponentPropsWithoutRef<"span">);
+
 const ItemTextOrEditItem = memo(
-  ({
-    edit,
-    item,
-    submit,
-    ...props
-  }: { edit?: boolean; item: Todo; submit: (text: string) => void } & (
-    | ComponentPropsWithoutRef<"input">
-    | ComponentPropsWithoutRef<"span">
-  )) => {
+  ({ edit, item, submit, ...props }: ItemTextOrEditItemProps) => {
     const [text, setText] = useState(item.text);
     const submitEdit = useCallback(() => submit(text), [text, submit]);
 
@@ -143,7 +141,7 @@ const ItemTextOrEditItem = memo(
     return (
       <>
         {edit ? (
-          <InputWithoutShadow
+          <CleanWhiteInput
             {...props}
             value={text}
             onBlur={submitEdit}

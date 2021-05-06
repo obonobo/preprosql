@@ -1,6 +1,11 @@
-import styled, { css } from "styled-components";
+import styled, { css, DefaultTheme, StyledComponent } from "styled-components";
 
-const Input = styled.input<{ $emptyList?: boolean }>`
+const Input: StyledComponent<
+  "input",
+  DefaultTheme,
+  { autoFocus: boolean; $emptyList?: boolean },
+  "autoFocus"
+> = styled.input.attrs({ autoFocus: true })<{ $emptyList: boolean }>`
   border: 0px solid grey;
   border-radius: 5px 5px 0px 0px;
   padding: 1em 4em;
@@ -15,10 +20,7 @@ const Input = styled.input<{ $emptyList?: boolean }>`
   inset: 0 auto auto 0;
   font-family: "Noto Serif", "DejaVu Serif", "Serif", serif;
   font-style: italic;
-
-  :focus {
-    outline: none;
-  }
+  outline: none;
 
   ${({ $emptyList }) =>
     $emptyList &&

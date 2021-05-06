@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { MutableRefObject, useCallback, useMemo, useState } from "react";
 import { Todo } from "./StoreContext";
 
 type Filter = "all" | "complete" | "incomplete";
@@ -48,11 +48,11 @@ const useFilter = (): {
  * basically, a double-click features is: you make x number of clicks within the
  * given timeframe to trigger the double-click.
  *
- * @param {number} numberOfClicks The number of clicks needed to stick the
- *                                trigger. Defaults to 2.
+ * @param numberOfClicks The number of clicks needed to stick the trigger.
+ *                       Defaults to 2.
  *
- * @param {number} timeout The expiry time of a click. Defaults to 200
- *                         milliseconds (shorter than it sounds).
+ * @param timeout The expiry time of a click. Defaults to 200 milliseconds
+ *                (shorter than it sounds).
  *
  * @returns A tuple of: [state, increment click, reset function]
  */
@@ -75,5 +75,36 @@ const useClickCounter = ({
   return [isSet, set, reset];
 };
 
-export { useFilter, useClickCounter };
+/**
+ * A function that scrolls to the bottom of an element after a short delay
+ *
+ * @param ref Reference to your element.
+ * @param delay The length of time to wait before executing the scroll.
+ * @param behavior The scroll behaviour that you want.
+ * @returns
+ */
+const useScrollToBottomFunction = <T extends HTMLElement>(
+  ref: MutableRefObject<T>,
+  {
+    delay = 50,
+    behavior = "smooth",
+  }: {
+    delay?: number;
+    behavior?: ScrollBehavior;
+  } = {}
+): (() => NodeJS.Timeout) =>
+  useCallback(
+    () =>
+      setTimeout(
+        () =>
+          ref?.current?.scrollBy({
+            behavior,
+            top: ref.current.scrollHeight,
+          }),
+        delay
+      ),
+    [ref, delay, behavior]
+  );
+
+export { useFilter, useClickCounter, useScrollToBottomFunction };
 export type { Filter };

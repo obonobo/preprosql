@@ -1,5 +1,6 @@
 /* eslint-disable react/display-name */
 import {
+  ComponentPropsWithoutRef,
   memo,
   MouseEvent,
   useCallback,
@@ -84,8 +85,22 @@ const PickerItems = ({
   );
 };
 
+// prettier-ignore
+const Fade = styled.div<{ visible?: boolean }>`
+  opacity: 0;
+  transition: all 0.3s;
+  ${({ visible }) => visible && css`
+    opacity: 1;
+  `}
+`;
+
 const ClearCompleted = () => {
-  const { dispatch } = useContext(StoreContext);
+  const { store, dispatch } = useContext(StoreContext);
+
+  const atLeastOneItemIsComplete = useMemo(
+    () => !!store.all.find((item) => item.completed),
+    [store]
+  );
 
   const clearCompleted = useCallback(
     () => dispatch({ type: "delete", item: { completed: true } }),
@@ -93,9 +108,11 @@ const ClearCompleted = () => {
   );
 
   return (
-    <PickerItem onClick={clearCompleted} style={{ justifySelf: "flex-end" }}>
-      Clear Completed
-    </PickerItem>
+    <Fade visible={atLeastOneItemIsComplete}>
+      <PickerItem onClick={clearCompleted} style={{ justifySelf: "flex-end" }}>
+        Clear Completed
+      </PickerItem>
+    </Fade>
   );
 };
 
@@ -115,10 +132,11 @@ const ItemsLeft = memo(() => {
 
 const FilterPicker = ({
   setFilter = () => null,
+  ...props
 }: {
   setFilter?: (f: Filter) => void;
-}): JSX.Element => (
-  <Grid>
+} & ComponentPropsWithoutRef<"div">): JSX.Element => (
+  <Grid {...props}>
     <ItemsLeft />
     <PickerItems setFilter={setFilter} />
     <ClearCompleted />

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable max-classes-per-file */
 
 import { createContext, Dispatch, ReactNode, useReducer, useMemo } from "react";
@@ -50,6 +51,20 @@ class TodoStore {
 
   get all(): Todo[] {
     return [...this.todos];
+  }
+
+  get length(): number {
+    return this.todos.length;
+  }
+
+  paginate(pageSize = 5): Todo[][] {
+    return this.todos.reduce(
+      (p, c) =>
+        p[p.length - 1].length >= pageSize
+          ? p.concat([[c]])
+          : p.slice(0, p.length - 1).concat([p[p.length - 1].concat([c])]),
+      [[]]
+    );
   }
 
   next({ text, completed }: { text?: string; completed?: boolean }): Todo {

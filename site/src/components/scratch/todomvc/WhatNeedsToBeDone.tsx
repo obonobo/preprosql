@@ -8,10 +8,11 @@ import {
   useState,
 } from "react";
 import styled, { css } from "styled-components";
-import FilterPicker from "./Filter";
+import FilterPicker from "./FilterPicker";
 import { useFilter } from "./hooks";
 import Input from "./Input";
-import { StoreContext } from "./StoreContext";
+import PagePicker from "./PagePicker";
+import { StoreContext, Todo } from "./StoreContext";
 import TodoItem from "./TodoItem";
 import ToggleSelectAll from "./ToggleSelectAll";
 
@@ -72,13 +73,24 @@ const List = styled.div<{ children?: ReactNode[] }>`
     `}
 `;
 
-const WhatNeedsToBeDone = (): JSX.Element => {
+const paginate = (pageSize = 5) => <T,>(p: T[][], c: T): T[][] =>
+  p[p.length - 1].length >= pageSize
+    ? p.concat([[c]])
+    : p.slice(0, p.length - 1).concat([p[p.length - 1].concat([c])]);
+
+const WhatNeedsToBeDone = ({
+  pageSize = 30,
+}: {
+  pageSize?: number;
+}): JSX.Element => {
+  const [text, setText] = useState("");
+  const [page, setPage] = useState(0);
+
   const { store, dispatch } = useContext(StoreContext);
-  const [text, setText] = useState<string>("");
   const { filter, setFilter } = useFilter();
 
   const emptyInput = useMemo(() => text === "", [text]);
-  const emptyList = useMemo(() => store.all.length === 0, [store]);
+  const emptyList = useMemo(() => store.length === 0, [store]);
 
   const onChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => setText(e.target.value),
@@ -90,12 +102,7 @@ const WhatNeedsToBeDone = (): JSX.Element => {
       if (e.key !== "Enter" || text === "") return;
       dispatch({
         type: "create",
-        item: {
-          id:
-            store.all.reduce((p, c) => Math.max(p, c.id), Number.MIN_VALUE) + 1,
-          completed: false,
-          text,
-        },
+        item: store.next({ completed: false, text }),
       });
       setText("");
     },
@@ -113,12 +120,26 @@ const WhatNeedsToBeDone = (): JSX.Element => {
         />
         <PlaceholderText $emptyInput={emptyInput} />
         <ToggleSelectAll />
-        {store?.all?.length > 0 && (
+        {store.length > 0 && (
           <List>
-            {store?.all
-              ?.filter(filter)
-              ?.map((item) => item && <TodoItem key={item.id} item={item} />)}
-            <FilterPicker setFilter={setFilter} />
+            {
+              // prettier-ignore
+              store.all
+                .filter(filter)
+                .reduce<Todo[][]>(paginate(pageSize), [[]])[page]
+                .map((item) => item && <TodoItem key={item.id} item={item} />)
+            }
+            <FilterPicker
+              setFilter={setFilter}
+              style={{ marginBottom: "3em" }}
+            />
+            {store.length > pageSize && (
+              <PagePicker
+                page={page}
+                totalPages={Math.ceil(store.length / pageSize)}
+                setPage={setPage}
+              />
+            )}
           </List>
         )}
       </AppGrid>

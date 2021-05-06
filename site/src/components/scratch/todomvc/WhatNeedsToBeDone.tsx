@@ -108,7 +108,7 @@ const BigList = memo(
         <List
           style={{
             overflow: "unset",
-            ...(filteredList.length === 0 ? { marginTop: "-2.1em" } : {}),
+            marginTop: filteredList.length === 0 && "-2.1em",
           }}
         >
           {filteredList.length > 0 && (

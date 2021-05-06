@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
 import {
   ChangeEvent,
   forwardRef,
@@ -79,12 +78,49 @@ const List = styled.div<{ children?: ReactNode[] }>`
     `}
 `;
 
-const paginate = (pageSize = 5) => <T,>(previous: T[][], current: T): T[][] =>
-  previous[previous.length - 1].length >= pageSize
-    ? previous.concat([[current]])
-    : previous
-        .slice(0, previous.length - 1)
-        .concat([previous[previous.length - 1].concat([current])]);
+const UnscrollableList = styled(List)<{ list: unknown[] }>`
+  overflow: unset;
+  margin-top: ${({ list }) => list.length === 0 && "-2.1em"};
+`;
+
+/**
+ * A reducer for paginating an array. Two values are returned - this makes it
+ * easy to use the reducer with spread syntax in the Array.reduce function. Like
+ * so:
+ *
+ * ```js
+ * myArray.reduce(...paginate(25))
+ * ```
+ *
+ * @param pageSize Number of elements per page
+ * @returns A tuple of [reducer, starting value]
+ */
+const paginate = (pageSize = 5): [<T>(p: T[][], c: T) => T[][], [[]]] => [
+  <T,>(p: T[][], c: T): T[][] =>
+    p[p.length - 1].length >= pageSize
+      ? p.concat([[c]])
+      : p.slice(0, p.length - 1).concat([p[p.length - 1].concat([c])]),
+  [[]],
+];
+
+const FilledList = memo(
+  forwardRef(
+    (
+      {
+        list,
+        pageSize,
+        page,
+      }: { list: Todo[]; pageSize: number; page: number },
+      ref: MutableRefObject<HTMLDivElement>
+    ) => (
+      <List ref={ref}>
+        {list
+          .reduce<Todo[][]>(...paginate(pageSize))
+          [page].map((item) => item && <TodoItem key={item.id} item={item} />)}
+      </List>
+    )
+  )
+);
 
 const BigList = memo(
   forwardRef(
@@ -105,24 +141,17 @@ const BigList = memo(
       ref: MutableRefObject<HTMLDivElement>
     ) =>
       store.length > 0 && (
-        <List
-          style={{
-            overflow: "unset",
-            marginTop: filteredList.length === 0 && "-2.1em",
-          }}
-        >
+        <UnscrollableList list={filteredList}>
           {filteredList.length > 0 && (
-            <List ref={ref}>
-              {
-                // prettier-ignore
-                filteredList
-                  .reduce<Todo[][]>(paginate(pageSize), [[]])[page]
-                  .map((item) => item && <TodoItem key={item.id} item={item} />)
-              }
-            </List>
+            <FilledList
+              ref={ref}
+              list={filteredList}
+              pageSize={pageSize}
+              page={page}
+            />
           )}
           <FilterPicker setFilter={setFilter} />
-        </List>
+        </UnscrollableList>
       )
   )
 );
